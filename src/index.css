@@ -186,3 +186,32 @@ img {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.header__profile {
+    position: relative;
+}
+
+.header__dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.header__dropdown button {
+    background-color: #f37254;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.header__dropdown button:hover {
+    background-color: #e05a3c;
+}
