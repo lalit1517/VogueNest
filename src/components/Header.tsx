@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
-import useCart from "../hooks/useCart";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import {jwtDecode, JwtPayload } from "jwt-decode";
+import  {jwtDecode, JwtPayload } from "jwt-decode";
 
 type PropsType = {
   viewCart: boolean;
   setViewCart: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-// Define the expected structure of the decoded JWT payload
 interface DecodedJwtPayload extends JwtPayload {
   name?: string;
   picture?: string;
-  // Add other fields you expect in the JWT payload
 }
 
 const Header = ({ viewCart, setViewCart }: PropsType) => {
-  const { totalItems, totalPrice } = useCart();
-  
-  // User state is either null or an object matching DecodedJwtPayload
   const [user, setUser] = useState<DecodedJwtPayload | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Check for the token in localStorage when the component mounts
     const token = localStorage.getItem("google_jwt");
     if (token) {
       try {
         const decoded = jwtDecode<DecodedJwtPayload>(token);
-        setUser(decoded); // Restore the user state
+        setUser(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
@@ -36,41 +30,76 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
   }, []);
 
   const handleLogout = () => {
-    googleLogout(); // Logs out from Google
-    setUser(null); // Clears the user state
-    localStorage.removeItem("google_jwt"); // Clear the token from localStorage
+    googleLogout();
+    setUser(null);
+    localStorage.removeItem("google_jwt");
+    setIsDropdownOpen(false);
   };
 
-  const handleLoginSuccess = (credentialResponse: any) => {
+  const handleLoginSuccess = (credentialResponse: { credential?: string }) => {
     const { credential } = credentialResponse;
     if (credential) {
-      const decoded = jwtDecode<DecodedJwtPayload>(credential);
-      setUser(decoded); // Store user info in state
-      localStorage.setItem("google_jwt", credential); // Save the token in localStorage
-      console.log(decoded);
+      try {
+        const decoded = jwtDecode<DecodedJwtPayload>(credential);
+        setUser(decoded);
+        localStorage.setItem("google_jwt", credential);
+        if (decoded.sub) {
+          localStorage.setItem("userId", decoded.sub); // Store the user ID
+        }
+        console.log(decoded);
+      } catch (error) {
+        console.error("Failed to decode credential:", error);
+      }
     } else {
       console.error("Credential is undefined");
     }
-  };
+  };  
 
-  const content = (
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  return (
     <header className="header">
       <div className="header__title-bar">
         <div>
           <img src="/logo.svg" alt="Logo" />
         </div>
-        <div className="header__price-box">
-          <p>Total Items: {totalItems}</p>
-          <p>Total Price: {totalPrice}</p>
+        <div>
+          <Nav viewCart={viewCart} setViewCart={setViewCart} />
+        </div>
+        <div>
+          {user ? (
+            <div className="relative">
+              <div className="flex items-center cursor-pointer" onClick={toggleDropdown}>
+                <p className="mr-2">Welcome, {user.name}</p>
+                <img
+                  className="w-[60px] h-[60px] rounded-full"
+                  src={user.picture || "https://img.icons8.com/bubbles/50/user.png"}
+                  alt={user.name || "User"}
+                />
+              </div>
+              {isDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg">
+                  <button
+                    className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <img
+                className="w-[60px] h-[60px]"
+                src="https://img.icons8.com/bubbles/50/user.png"
+                alt="Default user icon"
+              />
+            </div>
+          )}
         </div>
       </div>
-      <Nav viewCart={viewCart} setViewCart={setViewCart} />
-      {user ? (
-        <div>
-          <p>Welcome, {user.name}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
+      {!user && (
         <GoogleLogin
           onSuccess={handleLoginSuccess}
           onError={() => {
@@ -80,8 +109,6 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
       )}
     </header>
   );
-
-  return content;
 };
 
 export default Header;
