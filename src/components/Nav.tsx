@@ -1,20 +1,28 @@
+type ViewType = "products" | "cart" | "orders";
+
 type PropsType = {
-  viewCart: boolean,
-  setViewCart: React.Dispatch<React.SetStateAction<boolean>>,
-}
+  view: ViewType;
+  setView: React.Dispatch<React.SetStateAction<ViewType>>;
+};
 
-const Nav = ({ viewCart, setViewCart }: PropsType) => {
+const Nav = ({ view, setView }: PropsType) => {
+  const buttons = (
+    <>
+      <button onClick={() => setView("products")} className={view === "products" ? "active" : ""}>
+        Products
+      </button>
+      <button onClick={() => setView("cart")} className={view === "cart" ? "active" : ""}>
+        Cart
+      </button>
+      <button onClick={() => setView("orders")} className={view === "orders" ? "active" : ""}>
+        Orders
+      </button>
+    </>
+  );
 
-  const button = viewCart
-      ? <button onClick={() => setViewCart(false)}>View Products</button>
-      : <button onClick={() => setViewCart(true)}>View Cart</button>
+  const content = <nav className="nav">{buttons}</nav>;
 
-  const content = (
-      <nav className="nav">
-          {button}
-      </nav>
-  )
+  return content;
+};
 
-  return content
-}
-export default Nav
+export default Nav;

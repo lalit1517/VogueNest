@@ -1,11 +1,11 @@
 import useCart from "../hooks/useCart";
 import { useState, useEffect } from "react";
 import CartLineItem from "./CartLineItem";
-import Modal from "./Modal"; // Import the Modal component
+import Modal from "./Modal"; 
 import { jwtDecode } from "jwt-decode";
 
 type OrderType = {
-  userId: string; // Add userId to OrderType
+  userId: string; 
   name: string;
   email: string;
   phone: string;
@@ -44,10 +44,6 @@ const Cart = () => {
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
   const { dispatch, REDUCER_ACTIONS, totalItems, totalPrice, cart } = useCart();
-  const [orders, setOrders] = useState<OrderType[]>(() => {
-    const savedOrders = localStorage.getItem("orders");
-    return savedOrders ? JSON.parse(savedOrders) : [];
-  });
 
   // Check if the user is logged in by decoding the JWT token from localStorage
   useEffect(() => {
@@ -61,10 +57,6 @@ const Cart = () => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("orders", JSON.stringify(orders));
-  }, [orders]);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -160,7 +152,6 @@ const Cart = () => {
                     console.log("Payment Successful: " + response.razorpay_payment_id);
                     dispatch({ type: REDUCER_ACTIONS.SUBMIT });
                     setConfirm(true);
-                    setOrders((prevOrders) => [...prevOrders, orderData]); // Add the order to the orders state
                 } else {
                     alert("Failed to save order");
                 }
@@ -185,41 +176,6 @@ const Cart = () => {
     paymentObject.open();
 };
 
-  const ordersContent = orders.length > 0 && (
-    <section className="orders">
-      <h2>Your Orders</h2>
-      {orders.map((order, index) => (
-        <li key={index} className="cart__item">
-          {order.items.map((item, idx) => (
-            <img
-              key={idx}
-              src={`https://cart-services-jntk.onrender.com/public/images/${item.sku}.jpeg`}
-              style={{ width: "50px", height: "50px", marginRight: "10px" }}
-            />
-          ))}
-          <h3>Order {index + 1}</h3>
-          <p>Name: {order.name}</p>
-          <p>Email: {order.email}</p>
-          <p>Phone: {order.phone}</p>
-          <p>
-            Address: {order.address.houseNo}, {order.address.street},{" "}
-            {order.address.city}, {order.address.state}
-          </p>
-          <p>Total Price: ₹{order.totalPrice}</p>
-          <p>Payment ID: {order.paymentId}</p>
-          <h4>Items:</h4>
-          <ul>
-            {order.items.map((item, idx) => (
-              <li key={idx}>
-                {item.name} - {item.quantity} x ₹{item.price}
-              </li>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </section>
-  );
-
   const pageContent = (
     <>
       <h2 className="offscreen">Cart</h2>
@@ -239,11 +195,11 @@ const Cart = () => {
         <button
           className="cart__submit"
           onClick={onPlaceOrderClick}
+          disabled={!totalItems}
         >
           Place Order
         </button>
       </div>
-      {ordersContent}
     </>
   );
 

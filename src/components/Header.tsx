@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import  {jwtDecode, JwtPayload } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
+
+type ViewType = "products" | "cart" | "orders";
 
 type PropsType = {
-  viewCart: boolean;
-  setViewCart: React.Dispatch<React.SetStateAction<boolean>>;
+  view: ViewType;
+  setView: React.Dispatch<React.SetStateAction<ViewType>>;
 };
 
 interface DecodedJwtPayload extends JwtPayload {
   name?: string;
   picture?: string;
+  sub?: string; 
 }
 
-const Header = ({ viewCart, setViewCart }: PropsType) => {
-  const [user, setUser] = useState<DecodedJwtPayload | null>(null);
+const Header = ({ view, setView }: PropsType) => {
+  const { user, setUser } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -27,12 +31,13 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
         console.error("Failed to decode token:", error);
       }
     }
-  }, []);
+  }, [setUser]);
 
   const handleLogout = () => {
     googleLogout();
     setUser(null);
     localStorage.removeItem("google_jwt");
+    localStorage.removeItem("userId");
     setIsDropdownOpen(false);
   };
 
@@ -44,16 +49,15 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
         setUser(decoded);
         localStorage.setItem("google_jwt", credential);
         if (decoded.sub) {
-          localStorage.setItem("userId", decoded.sub); // Store the user ID
+          localStorage.setItem("userId", decoded.sub);
         }
-        console.log(decoded);
       } catch (error) {
         console.error("Failed to decode credential:", error);
       }
     } else {
       console.error("Credential is undefined");
     }
-  };  
+  };
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -64,7 +68,7 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
           <img src="/logo.svg" alt="Logo" />
         </div>
         <div>
-          <Nav viewCart={viewCart} setViewCart={setViewCart} />
+          <Nav view={view} setView={setView} />
         </div>
         <div>
           {user ? (
