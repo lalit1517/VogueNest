@@ -1,11 +1,10 @@
-// AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { JwtPayload } from "jwt-decode";
 
 interface DecodedJwtPayload extends JwtPayload {
   name?: string;
   picture?: string;
-  sub?: string; // User ID or other custom claims
+  sub?: string; 
 }
 
 interface AuthContextType {

@@ -108,7 +108,7 @@ const Cart = () => {
       .split("T")[0];
 
     const options = {
-      key: "rzp_test_8Zs7nAcnJ3g9wP",
+      key: import.meta.env.VITE_RAZORPAY_KEY,
       currency: "INR",
       name: name,
       description: "Thank you for your purchase",

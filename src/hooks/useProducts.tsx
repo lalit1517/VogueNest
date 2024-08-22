@@ -7,7 +7,3 @@ const useProducts = (): UseProductsContextType => {
 }
 
 export default useProducts
-
-//xIMrIPxAiRRW1xh9AMjVZizU
-
-//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
