@@ -37,7 +37,7 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
 
     const content = (
         <li className="cart__item">
-            <img src={img} alt={item.name} className="cart__img" />
+            <img loading="lazy" src={img} alt={item.name} className="cart__img" />
             <div aria-label="Item Name">{item.name}</div>
             <div aria-label="Price Per Item">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)}</div>
 

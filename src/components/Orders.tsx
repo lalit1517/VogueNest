@@ -22,6 +22,8 @@ type OrderType = {
   totalPrice: string;
   paymentId: string;
   paymentStatus: boolean;
+  orderDate: string;
+  expectedArrivalDate: string;
 };
 
 const Orders = () => {
@@ -37,7 +39,7 @@ const Orders = () => {
 
     if (userId) {
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders/${userId}`);
+        const response = await axios.get(`https://cart-services-jntk.onrender.com/api/orders/${userId}`);
         setOrders(response.data);
       } catch (error) {
         setError('Failed to fetch orders');
@@ -74,8 +76,10 @@ const Orders = () => {
               <p className="mb-1">
                 <span className="font-semibold">Address:</span> {order.address.houseNo}, {order.address.street}, {order.address.city}, {order.address.state}
               </p>
-              <p className="mb-1"><span className="font-semibold">Total Price:</span> ₹{order.totalPrice}</p>
-              <p className="mb-4"><span className="font-semibold">Payment ID:</span> {order.paymentId}</p>
+              <p className="mb-1"><span className="font-semibold">Total Price:</span> {order.totalPrice}</p>
+              <p className="mb-1"><span className="font-semibold">Payment ID:</span> {order.paymentId}</p>
+              <p className="mb-1"><span className="font-semibold">Date of Order:</span> {order.orderDate}</p>
+              <p className="mb-4"><span className="font-semibold">Expected date of Arrival:</span> {order.expectedArrivalDate}</p>
               <h4 className="text-lg font-semibold mb-2">Items:</h4>
               <ul className="space-y-2">
                 {order.items.map((item, idx) => (

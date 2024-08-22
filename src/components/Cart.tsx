@@ -1,11 +1,11 @@
 import useCart from "../hooks/useCart";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CartLineItem from "./CartLineItem";
-import Modal from "./Modal"; 
+import Modal from "./Modal";
 import { jwtDecode } from "jwt-decode";
 
 type OrderType = {
-  userId: string; 
+  userId: string;
   name: string;
   email: string;
   phone: string;
@@ -24,6 +24,8 @@ type OrderType = {
   totalPrice: string;
   paymentId: string;
   paymentStatus: boolean;
+  orderDate: string;
+  expectedArrivalDate: string;
 };
 
 interface DecodedJwtPayload {
@@ -33,7 +35,6 @@ interface DecodedJwtPayload {
 }
 
 const Cart = () => {
-  const [confirm, setConfirm] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [user, setUser] = useState<DecodedJwtPayload | null>(null);
   const [name, setName] = useState<string>("");
@@ -44,19 +45,6 @@ const Cart = () => {
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
   const { dispatch, REDUCER_ACTIONS, totalItems, totalPrice, cart } = useCart();
-
-  // Check if the user is logged in by decoding the JWT token from localStorage
-  useEffect(() => {
-    const token = localStorage.getItem("google_jwt");
-    if (token) {
-      try {
-        const decoded = jwtDecode<DecodedJwtPayload>(token);
-        setUser(decoded);
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-      }
-    }
-  }, []);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -80,23 +68,23 @@ const Cart = () => {
         setUser(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
-        setUser(null); // Ensure the user is null on error
+        setUser(null); 
       }
     } else {
-      setUser(null); // Ensure the user is null if no token is found
+      setUser(null); 
     }
 
     if (!user) {
-      setShowModal(true); // Show modal asking the user to log in
+      setShowModal(true); 
     } else {
-      setShowModal(true); // Show the order form modal
+      setShowModal(true); 
     }
   };
 
   const handleSubmitForm = async () => {
     if (!name || !email || !phone || !houseNo || !street || !city || !state) {
-        alert("Please fill all the required fields.");
-        return;
+      alert("Please fill all the required fields.");
+      return;
     }
 
     setShowModal(false);
@@ -104,77 +92,87 @@ const Cart = () => {
     const res = await loadRazorpayScript();
 
     if (!res) {
-        alert("Razorpay SDK failed to load. Are you online?");
-        return;
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
     }
 
-    const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+    const userId = localStorage.getItem("userId"); 
+
+    const orderDate = new Date();
+    const expectedArrivalDate = new Date(orderDate);
+    expectedArrivalDate.setDate(orderDate.getDate() + 3);
+
+    const formattedOrderDate = orderDate.toISOString().split("T")[0];
+    const formattedExpectedArrivalDate = expectedArrivalDate
+      .toISOString()
+      .split("T")[0];
 
     const options = {
-        key: "rzp_test_8Zs7nAcnJ3g9wP", // Replace with your Razorpay key
-        currency: "INR",
+      key: "rzp_test_8Zs7nAcnJ3g9wP",
+      currency: "INR",
+      name: name,
+      description: "Thank you for your purchase",
+      image: "https://vogue-nest.vercel.app/logo.svg",
+      handler: async function (response: any) {
+        try {
+          const orderData: OrderType = {
+            userId: userId || "",
+            name,
+            email,
+            phone,
+            address: {
+              houseNo,
+              street,
+              city,
+              state,
+            },
+            items: cart.map((item) => ({
+              sku: item.sku,
+              name: item.name,
+              quantity: item.qty,
+              price: item.price,
+            })),
+            totalPrice,
+            paymentId: response.razorpay_payment_id,
+            paymentStatus: true,
+            orderDate: formattedOrderDate,
+            expectedArrivalDate: formattedExpectedArrivalDate,
+          };
+
+          const res = await fetch("https://cart-services-jntk.onrender.com/api/order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          });
+
+          if (res.ok) {
+            console.log("Payment Successful: " + response.razorpay_payment_id);
+            dispatch({ type: REDUCER_ACTIONS.SUBMIT });
+          } else {
+            alert("Failed to save order");
+          }
+        } catch (error) {
+          console.log("Error occurred while saving order");
+        }
+      },
+      prefill: {
         name: name,
-        description: "Thank you for your purchase",
-        image: "https://vogue-nest.vercel.app/logo.svg",
-        handler: async function (response: any) {
-            try {
-                const orderData: OrderType = {
-                    userId: userId || "", // Add userId to the orderData
-                    name,
-                    email,
-                    phone,
-                    address: {
-                        houseNo,
-                        street,
-                        city,
-                        state,
-                    },
-                    items: cart.map((item) => ({
-                        sku: item.sku,
-                        name: item.name,
-                        quantity: item.qty,
-                        price: item.price,
-                    })),
-                    totalPrice,
-                    paymentId: response.razorpay_payment_id,
-                    paymentStatus: true,
-                };
-
-                const res = await fetch("http://localhost:5000/api/order", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(orderData),
-                });
-
-                if (res.ok) {
-                    console.log("Payment Successful: " + response.razorpay_payment_id);
-                    dispatch({ type: REDUCER_ACTIONS.SUBMIT });
-                    setConfirm(true);
-                } else {
-                    alert("Failed to save order");
-                }
-            } catch (error) {
-                console.log("Error occurred while saving order");
-            }
-        },
-        prefill: {
-            name: name,
-            email: email,
-            contact: phone,
-        },
-        notes: {
-            address: `${houseNo}, ${street}, ${city}, ${state}`,
-        },
-        theme: {
-            color: "#F37254",
-        },
+        email: email,
+        contact: phone,
+      },
+      notes: {
+        address: `${houseNo}, ${street}, ${city}, ${state}`,
+      },
+      theme: {
+        color: "#F37254",
+      },
     };
 
     const paymentObject = new (window as any).Razorpay(options);
     paymentObject.open();
-};
+  };
 
   const pageContent = (
     <>
@@ -191,7 +189,7 @@ const Cart = () => {
       </ul>
       <div className="cart__totals">
         <p>Total Items: {totalItems}</p>
-        <p>Total Price: ₹{totalPrice}</p>
+        <p>Total Price: {totalPrice}</p>
         <button
           className="cart__submit"
           onClick={onPlaceOrderClick}
