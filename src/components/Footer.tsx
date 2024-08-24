@@ -64,7 +64,7 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("products")}
-                      className={view === "products" ? "active" : ""}
+                      className={`underline-hover ${view === "products" ? "active" : ""}`}
                     >
                       Products
                     </button>
@@ -72,7 +72,7 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("cart")}
-                      className={view === "cart" ? "active" : ""}
+                      className={`underline-hover ${view === "cart" ? "active" : ""}`}
                     >
                       Cart
                     </button>
@@ -80,7 +80,7 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("orders")}
-                      className={view === "orders" ? "active" : ""}
+                      className={`underline-hover ${view === "orders" ? "active" : ""}`}
                     >
                       Orders
                     </button>
