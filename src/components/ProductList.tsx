@@ -26,7 +26,7 @@ const ProductList = () => {
     }
 
     const content = (
-        <main className="main main--products">
+        <main className="main main--products container container-xl-custom">
             {pageContent}
         </main>
     )

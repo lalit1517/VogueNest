@@ -62,7 +62,7 @@ const Header = ({ view, setView }: PropsType) => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <header className="header">
+    <header className="container container-xl-custom">
       <div className="header__title-bar">
         <div>
           <img src="/logo.svg" alt="Logo" />
