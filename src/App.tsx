@@ -3,13 +3,20 @@ import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
 import Orders from "./components/Orders";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 
 type ViewType = "products" | "cart" | "orders";
 
 function App() {
   const [view, setView] = useState<ViewType>("products");
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [view]);
 
   let pageContent;
   switch (view) {
