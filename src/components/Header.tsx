@@ -90,13 +90,16 @@ const Header = ({ view, setView }: PropsType) => {
   };
 
   const toggleMenu = () => {
-    setMenuOpen((prev) => !prev);
-    if (menuOpen) {
-      document.body.classList.add("noscroll");
-    } else {
-      document.body.classList.remove("noscroll");
-    }
-  };
+    setMenuOpen((prev) => {
+      const newMenuOpen = !prev;
+      if (newMenuOpen) {
+        document.body.classList.add("noscroll");
+      } else {
+        document.body.classList.remove("noscroll");
+      }
+      return newMenuOpen;
+    });
+  };  
 
   const buttonVariants = {
     hidden: {
