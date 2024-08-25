@@ -352,6 +352,7 @@ const Header = ({ view, setView }: PropsType) => {
                   onClick={() => {
                     setView("products");
                     setMenuOpen(false);
+                    document.body.classList.remove("noscroll");
                   }}
                 >
                   Products
@@ -364,6 +365,7 @@ const Header = ({ view, setView }: PropsType) => {
                   onClick={() => {
                     setView("cart");
                     setMenuOpen(false);
+                    document.body.classList.remove("noscroll");
                   }}
                 >
                   Cart
@@ -376,6 +378,7 @@ const Header = ({ view, setView }: PropsType) => {
                   onClick={() => {
                     setView("orders");
                     setMenuOpen(false);
+                    document.body.classList.remove("noscroll");
                   }}
                 >
                   Orders
