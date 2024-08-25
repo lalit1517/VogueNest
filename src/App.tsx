@@ -34,7 +34,7 @@ function App() {
     <>
       <AuthProvider>
         <Header view={view} setView={setView} />
-        {pageContent}
+        <div className="pt-[97px]">{pageContent}</div>
         <Footer view={view} setView={setView} />
       </AuthProvider>
     </>

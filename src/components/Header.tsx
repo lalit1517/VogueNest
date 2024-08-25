@@ -18,7 +18,6 @@ interface DecodedJwtPayload extends JwtPayload {
 }
 
 const Header = ({ view, setView }: PropsType) => {
-
   const { user, setUser } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,7 +69,7 @@ const Header = ({ view, setView }: PropsType) => {
       try {
         const decoded = jwtDecode<DecodedJwtPayload>(credential);
         if (decoded.name) {
-          decoded.name = decoded.name.split(" ")[0]; 
+          decoded.name = decoded.name.split(" ")[0];
         }
         setUser(decoded);
         localStorage.setItem("google_jwt", credential);
@@ -95,11 +94,19 @@ const Header = ({ view, setView }: PropsType) => {
   };
 
   const buttonVariants = {
-    hidden: { opacity: 0, y: 50, transition: { duration: 0.6, ease: "easeOut" } }, 
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }, 
-    exit: { opacity: 0, y: -50, transition: { duration: 0.6, ease: "easeIn" } }, 
+    hidden: {
+      opacity: 0,
+      y: 50,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.6, ease: "easeIn" } },
   };
-  
+
   const menuVariants = {
     hidden: {
       opacity: 0,
@@ -111,7 +118,7 @@ const Header = ({ view, setView }: PropsType) => {
       opacity: 1,
       transition: {
         when: "beforeChildren",
-        staggerChildren: 0.15, 
+        staggerChildren: 0.15,
       },
     },
     exit: {
@@ -123,11 +130,40 @@ const Header = ({ view, setView }: PropsType) => {
     },
   };
 
+  const [show, setShow] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", controlNavbar, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY]);
+
   return (
     <header
-      className={`bg-black shadow z-[10000] ${menuOpen ? "fixed w-full md:static" : ""}`}
+      className={` bg-black shadow fixed w-full z-[10000] ${
+        show ? "active-menu" : ""
+      } ${menuOpen ? "fixed w-full" : "header"}`}
     >
-      <div className="container container-xl-custom flex items-center py-6 justify-between md:justify-center">
+      <div className="container container-xl-custom h-[97px] flex items-center py-6 justify-between md:justify-center">
         {/* Logo Section */}
         <div className="w-1/3 flex items-center justify-start">
           <a href="/" className="text-xl font-bold text-gray-800">
@@ -138,7 +174,7 @@ const Header = ({ view, setView }: PropsType) => {
         {/* Navigation Links - Desktop */}
         <nav className="hidden md:flex items-center justify-evenly w-1/3">
           <button
-            className={`underline-hover font-bold ${
+            className={`underline-hover font-bold transition-all duration-300 ${
               view === "products" ? "active text-[#E53935]" : "text-white"
             }`}
             onClick={() => setView("products")}
@@ -146,7 +182,7 @@ const Header = ({ view, setView }: PropsType) => {
             Products
           </button>
           <button
-            className={`underline-hover font-bold ${
+            className={`underline-hover font-bold transition-all duration-300 ${
               view === "cart" ? "active text-[#E53935]" : "text-white"
             }`}
             onClick={() => setView("cart")}
@@ -154,7 +190,7 @@ const Header = ({ view, setView }: PropsType) => {
             Cart
           </button>
           <button
-            className={` underline-hover font-bold ${
+            className={` underline-hover font-bold transition-all duration-300 ${
               view === "orders" ? "active text-[#E53935]" : "text-white"
             }`}
             onClick={() => setView("orders")}
@@ -168,17 +204,17 @@ const Header = ({ view, setView }: PropsType) => {
           <div>
             <div className="flex items-center gap-2">
               {user ? (
-                <p className="text-white text-sm lg:text-base font-medium">
+                <p className="text-white transition-all duration-300 text-sm lg:text-base font-medium">
                   Welcome, {user.name}
                 </p>
               ) : (
-                <p className="text-gray-800 font-semibold mb-2"></p>
+                <p className="text-gray-800 transition-all duration-300 font-semibold mb-2"></p>
               )}
               <img
                 ref={profilePicRef}
-                className={`${
+                className={`transition-all duration-300 ${
                   user ? "w-[35px] h-[35px]" : "w-[42px] h-[42px]"
-                } transition-all rounded-full cursor-pointer`}
+                }  rounded-full cursor-pointer`}
                 src={
                   user?.picture || "https://img.icons8.com/bubbles/50/user.png"
                 }
@@ -241,7 +277,7 @@ const Header = ({ view, setView }: PropsType) => {
                   width="55"
                   height="4"
                   fill={menuOpen ? "#E53935" : "white"}
-                  className="transition-all duration-300"
+                  className="transition-all duration-500"
                   transform="rotate(45 36 6)"
                 />
                 <rect
@@ -250,7 +286,7 @@ const Header = ({ view, setView }: PropsType) => {
                   width="55"
                   height="4"
                   fill={menuOpen ? "#E53935" : "white"}
-                  className="transition duration-300"
+                  className="transition-all duration-500"
                   transform="rotate(-45 32 6)"
                 />
               </svg>
@@ -268,7 +304,7 @@ const Header = ({ view, setView }: PropsType) => {
                   width="55"
                   height="4"
                   fill={menuOpen ? "#E53935" : "white"}
-                  className="transition-all duration-300"
+                  className="transition-all duration-500"
                 />
                 <rect
                   id="rect2"
@@ -276,7 +312,7 @@ const Header = ({ view, setView }: PropsType) => {
                   width="55"
                   height="4"
                   fill={menuOpen ? "#E53935" : "white"}
-                  className="transition duration-300"
+                  className="transition-all duration-500"
                 />
               </svg>
             )}
@@ -285,77 +321,90 @@ const Header = ({ view, setView }: PropsType) => {
       </div>
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
-      {menuOpen && (
-        <motion.div
-          animate="visible"
-          id="navigation-menu"
-          initial="hidden"
-          exit="exit"
-          variants={menuVariants}
-          className="w-full fixed z-[10000]"
-        >
-          <div
-            className={`bg-black ${
-              menuOpen
-                ? "fixed h-screen md:hidden flex flex-col items-center justify-center w-full"
-                : "hidden"
-            }`}
+        {menuOpen && (
+          <motion.div
+            animate="visible"
+            id="navigation-menu"
+            initial="hidden"
+            exit="exit"
+            variants={menuVariants}
+            className="w-full fixed z-[10000]"
           >
-            <nav className="flex flex-col items-center space-y-6 mb-10">
-              <motion.button
-                variants={buttonVariants}
-                className={`text-4xl ${
-                  view === "products" ? "active text-[#E53935]" : "text-white"
-                }`}
-                onClick={() => { setView("products"); setMenuOpen(false); } }
-              >
-                Products
-              </motion.button>
-              <motion.button
-                variants={buttonVariants}
-                className={`text-4xl ${
-                  view === "cart" ? "active text-[#E53935]" : "text-white"
-                }`}
-                onClick={() => { setView("cart"); setMenuOpen(false); } }
-              >
-                Cart
-              </motion.button>
-              <motion.button
-                variants={buttonVariants}
-                className={`text-4xl ${
-                  view === "orders" ? "active text-[#E53935]" : "text-white"
-                }`}
-                onClick={() => { setView("orders"); setMenuOpen(false); } }
-              >
-                Orders
-              </motion.button>
-              <div
-                className={`flex items-center justify-center w-full bottom-28 absolute ${
-                  user ? "pl-0" : "pl-6"
-                }`}
-              >
-                {user ? (
-                  <motion.button
-                    variants={buttonVariants}
-                    className="text-white text-xl underline"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </motion.button>
-                ) : (
-                  <GoogleLogin
-                    onSuccess={handleLoginSuccess}
-                    onError={() => {
-                      console.log("Login Failed");
-                    }}
-                  />
-                )}
-              </div>
-            </nav>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <div
+              className={`bg-black ${
+                menuOpen
+                  ? "fixed md:hidden h-[87vh] flex flex-col items-center justify-center w-full"
+                  : "hidden"
+              }`}
+            >
+              <nav className="flex flex-col items-center space-y-6 mb-10">
+                <motion.button
+                  variants={buttonVariants}
+                  className={`text-4xl ${
+                    view === "products" ? "active text-[#E53935]" : "text-white"
+                  }`}
+                  onClick={() => {
+                    setView("products");
+                    setMenuOpen(false);
+                  }}
+                >
+                  Products
+                </motion.button>
+                <motion.button
+                  variants={buttonVariants}
+                  className={`text-4xl ${
+                    view === "cart" ? "active text-[#E53935]" : "text-white"
+                  }`}
+                  onClick={() => {
+                    setView("cart");
+                    setMenuOpen(false);
+                  }}
+                >
+                  Cart
+                </motion.button>
+                <motion.button
+                  variants={buttonVariants}
+                  className={`text-4xl ${
+                    view === "orders" ? "active text-[#E53935]" : "text-white"
+                  }`}
+                  onClick={() => {
+                    setView("orders");
+                    setMenuOpen(false);
+                  }}
+                >
+                  Orders
+                </motion.button>
+                <div
+                  className={`flex items-center justify-center w-full bottom-10 absolute ${
+                    user ? "pl-0" : "pl-6"
+                  }`}
+                >
+                  {user ? (
+                    <motion.button
+                      variants={buttonVariants}
+                      className="text-white text-xl underline"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      variants={buttonVariants}
+                    >
+                      <GoogleLogin
+                        onSuccess={handleLoginSuccess}
+                        onError={() => {
+                          console.log("Login Failed");
+                        }}
+                      />
+                    </motion.button>
+                  )}
+                </div>
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
