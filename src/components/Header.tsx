@@ -357,7 +357,7 @@ const Header = ({ view, setView }: PropsType) => {
                 Orders
               </motion.button>
               <div
-                className={`flex items-center justify-center w-full bottom-32 absolute`}
+                className={`flex items-center justify-center w-full`}
               >
                 {user ? (
                   <motion.button
