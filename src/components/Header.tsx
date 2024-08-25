@@ -18,6 +18,7 @@ interface DecodedJwtPayload extends JwtPayload {
 }
 
 const Header = ({ view, setView }: PropsType) => {
+
   const { user, setUser } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,7 +70,7 @@ const Header = ({ view, setView }: PropsType) => {
       try {
         const decoded = jwtDecode<DecodedJwtPayload>(credential);
         if (decoded.name) {
-          decoded.name = decoded.name.split(" ")[0];
+          decoded.name = decoded.name.split(" ")[0]; 
         }
         setUser(decoded);
         localStorage.setItem("google_jwt", credential);
@@ -94,19 +95,11 @@ const Header = ({ view, setView }: PropsType) => {
   };
 
   const buttonVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.6, ease: "easeIn" } },
+    hidden: { opacity: 0, y: 50, transition: { duration: 0.6, ease: "easeOut" } }, 
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }, 
+    exit: { opacity: 0, y: -50, transition: { duration: 0.6, ease: "easeIn" } }, 
   };
-
+  
   const menuVariants = {
     hidden: {
       opacity: 0,
@@ -118,7 +111,7 @@ const Header = ({ view, setView }: PropsType) => {
       opacity: 1,
       transition: {
         when: "beforeChildren",
-        staggerChildren: 0.15,
+        staggerChildren: 0.15, 
       },
     },
     exit: {
@@ -159,9 +152,7 @@ const Header = ({ view, setView }: PropsType) => {
 
   return (
     <header
-      className={` bg-black shadow fixed w-full z-[10000] ${
-        show ? "active-menu" : ""
-      } ${menuOpen ? "fixed w-full" : "header"}`}
+      className={` bg-black shadow fixed w-full z-[10000] ${show ? "active-menu" : ""} ${menuOpen ? "fixed w-full" : "header"}`}
     >
       <div className="container container-xl-custom h-[97px] flex items-center py-6 justify-between md:justify-center">
         {/* Logo Section */}
@@ -321,90 +312,79 @@ const Header = ({ view, setView }: PropsType) => {
       </div>
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            animate="visible"
-            id="navigation-menu"
-            initial="hidden"
-            exit="exit"
-            variants={menuVariants}
-            className="w-full fixed z-[10000]"
+      {menuOpen && (
+        <motion.div
+          animate="visible"
+          id="navigation-menu"
+          initial="hidden"
+          exit="exit"
+          variants={menuVariants}
+          className="w-full fixed z-[10000] md:hidden"
+        >
+          <div
+            className={`bg-black ${
+              menuOpen
+                ? "fixed md:hidden w-full"
+                : "hidden"
+            }`}
           >
-            <div
-              className={`bg-black ${
-                menuOpen
-                  ? "fixed md:hidden h-[87vh] flex flex-col items-center justify-center w-full"
-                  : "hidden"
-              }`}
-            >
-              <nav className="flex flex-col items-center space-y-6 mb-10">
-                <motion.button
-                  variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "products" ? "active text-[#E53935]" : "text-white"
-                  }`}
-                  onClick={() => {
-                    setView("products");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Products
-                </motion.button>
-                <motion.button
-                  variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "cart" ? "active text-[#E53935]" : "text-white"
-                  }`}
-                  onClick={() => {
-                    setView("cart");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Cart
-                </motion.button>
-                <motion.button
-                  variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "orders" ? "active text-[#E53935]" : "text-white"
-                  }`}
-                  onClick={() => {
-                    setView("orders");
-                    setMenuOpen(false);
-                  }}
-                >
-                  Orders
-                </motion.button>
-                <div
-                  className={`flex items-center justify-center w-full bottom-10 absolute ${
-                    user ? "pl-0" : "pl-6"
-                  }`}
-                >
-                  {user ? (
-                    <motion.button
-                      variants={buttonVariants}
-                      className="text-white text-xl underline"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </motion.button>
-                  ) : (
-                    <motion.button
-                      variants={buttonVariants}
-                    >
-                      <GoogleLogin
-                        onSuccess={handleLoginSuccess}
-                        onError={() => {
-                          console.log("Login Failed");
-                        }}
-                      />
-                    </motion.button>
-                  )}
-                </div>
-              </nav>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <nav className="flex min-h-screen mt-auto pt-48 flex-col items-center space-y-6">
+              <motion.button
+                variants={buttonVariants}
+                className={`text-4xl ${
+                  view === "products" ? "active text-[#E53935]" : "text-white"
+                }`}
+                onClick={() => { setView("products"); setMenuOpen(false); } }
+              >
+                Products
+              </motion.button>
+              <motion.button
+                variants={buttonVariants}
+                className={`text-4xl ${
+                  view === "cart" ? "active text-[#E53935]" : "text-white"
+                }`}
+                onClick={() => { setView("cart"); setMenuOpen(false); } }
+              >
+                Cart
+              </motion.button>
+              <motion.button
+                variants={buttonVariants}
+                className={`text-4xl ${
+                  view === "orders" ? "active text-[#E53935]" : "text-white"
+                }`}
+                onClick={() => { setView("orders"); setMenuOpen(false); } }
+              >
+                Orders
+              </motion.button>
+              <div
+                className={`flex items-center justify-center w-full bottom-32 absolute`}
+              >
+                {user ? (
+                  <motion.button
+                    variants={buttonVariants}
+                    className="text-white text-xl underline"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    variants={buttonVariants}
+                  >
+                  <GoogleLogin
+                    onSuccess={handleLoginSuccess}
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                  />
+                  </motion.button>
+                )}
+              </div>
+            </nav>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
     </header>
   );
 };
