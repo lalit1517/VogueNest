@@ -92,6 +92,7 @@ const Header = ({ view, setView }: PropsType) => {
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
+    document.body.classList.add("noscroll");
   };
 
   const buttonVariants = {
@@ -328,7 +329,7 @@ const Header = ({ view, setView }: PropsType) => {
                 : "hidden"
             }`}
           >
-            <nav className="flex min-h-screen mt-auto pt-48 flex-col items-center space-y-6">
+            <nav className="flex min-h-screen pt-48 flex-col items-center space-y-6">
               <motion.button
                 variants={buttonVariants}
                 className={`text-4xl ${
@@ -357,7 +358,7 @@ const Header = ({ view, setView }: PropsType) => {
                 Orders
               </motion.button>
               <div
-                className={`flex items-center justify-center w-full`}
+                className={`flex items-center justify-center w-full bottom-40 absolute`}
               >
                 {user ? (
                   <motion.button

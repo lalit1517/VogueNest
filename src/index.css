@@ -222,6 +222,10 @@ img {
   transition: top 0.5s;
 }
 
+.noscroll {
+  overflow: hidden;
+}
+
 /* Header */
 
 /* Footer */
