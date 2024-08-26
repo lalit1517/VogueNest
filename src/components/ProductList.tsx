@@ -26,7 +26,7 @@ const ProductList = () => {
     }
 
     const content = (
-        <main className="main main--products container container-xl-custom">
+        <main className="main main--products container container-xl-custom py-20">
             {pageContent}
         </main>
     )

@@ -19,9 +19,9 @@ const Product = ({ product, dispatch, REDUCER_ACTIONS, inCart }: PropsType): Rea
     const itemInCart = inCart ? ' → Item in Cart: ✔️' : null
 
     const content =
-        <article className="product">
-            <h3>{product.name}</h3>
-            <img src={img} alt={product.name} className="product__img" />
+        <article className="product flex flex-col gap-2 items-center justify-between">
+            <h3 className="md:h-12 lg:h-auto">{product.name}</h3>
+            <img src={img} alt={product.name} className="w-[90%]" />
             <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}{itemInCart}</p>
             <button onClick={onAddToCart}>Add to Cart</button>
         </article>
