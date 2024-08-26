@@ -239,7 +239,7 @@ const Header = ({ view, setView }: PropsType) => {
                   {user ? (
                     <>
                       <button
-                        className="px-8 py-2 text-gray-800 border text-sm hover:text-[#E53935] hover:bg-black transition-all font-bold border-gray-800 rounded-full"
+                        className="px-8 py-2 text-gray-800 border text-sm hover:text-[#E53935] hover:bg-black transition-all duration-300 font-bold border-gray-800 rounded-full"
                         onClick={handleLogout}
                       >
                         Logout
@@ -391,7 +391,7 @@ const Header = ({ view, setView }: PropsType) => {
                   {user ? (
                     <motion.button
                       variants={buttonVariants}
-                      className="text-white text-xl underline"
+                      className="text-white text-lg underline"
                       onClick={handleLogout}
                     >
                       Logout
@@ -403,6 +403,8 @@ const Header = ({ view, setView }: PropsType) => {
                         onError={() => {
                           console.log("Login Failed");
                         }}
+                        shape="circle"
+                        width={80}
                       />
                     </motion.button>
                   )}

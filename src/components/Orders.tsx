@@ -91,7 +91,7 @@ const Orders = () => {
                     />
                     <div>
                       <p className="font-semibold">{item.name}</p>
-                      <p>{item.quantity} x ₹{item.price}</p>
+                      <p>{item.quantity} x ${item.price}</p>
                     </div>
                   </li>
                 ))}
