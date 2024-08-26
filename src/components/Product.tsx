@@ -52,7 +52,7 @@ const Product = ({
         </div>
 
         <div className={`bottom ${isClicked ? "clicked" : ""}`}>
-          <div className="left border">
+          <div className="left">
             <div className="details text-white sm:text-base lg:text-xl flex items-center justify-center w-3/4">
               <p>
                 {new Intl.NumberFormat("en-US", {

@@ -22,6 +22,8 @@ const Footer = ({ view, setView }: PropsType) => {
     }
   };
 
+  const year = new Date().getFullYear();
+
   return (
     <>
       <footer>
@@ -174,12 +176,9 @@ const Footer = ({ view, setView }: PropsType) => {
               <div className="row opacity-[0.2]">
                 <div className=" bg-gray-200 h-[0.01rem]" />
               </div>
-              <div className="w-full py-6 md:flex text-sm md:text-base font-medium items-center text-gray-400 justify-center md:justify-between">
+              <div className="w-full py-6 md:flex text-xs md:text-sm font-medium items-center text-gray-400 justify-center">
                 <div className="text-center md:text-start mb-2 md:mb-0">
-                  &copy; Created By VogueNest
-                </div>
-                <div className="text-center md:text-end">
-                  All Rights Reserved.
+                 ©️ {year} VogueNest
                 </div>
               </div>
             </div>

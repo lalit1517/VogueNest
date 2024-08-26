@@ -335,6 +335,7 @@ img {
   width: 50%;
   position: relative;
   float: left;
+  background: black;
 }
 
 .bottom .left .details {
