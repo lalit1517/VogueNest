@@ -175,7 +175,7 @@ const Header = ({ view, setView }: PropsType) => {
         {/* Logo Section */}
         <div className="w-1/3 flex items-center justify-start">
           <a href="/" className="text-xl font-bold text-gray-800">
-            <img src="/logo.png" alt="Logo" />
+            <img src="/logo.svg" alt="Logo" />
           </a>
         </div>
 
@@ -233,13 +233,13 @@ const Header = ({ view, setView }: PropsType) => {
             {dropdownOpen && (
               <div
                 ref={dropdownRef}
-                className="absolute right-2 mt-2 w-60 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+                className="absolute right-2 mt-3 bg-white border border-gray-300 rounded-md shadow-lg z-10"
               >
                 <div className="flex flex-col p-2 overflow-hidden">
                   {user ? (
                     <>
                       <button
-                        className="px-4 py-2 text-gray-600 hover:text-gray-800 bg-gray-100 rounded-md"
+                        className="px-8 py-2 text-gray-800 border text-sm hover:text-[#E53935] hover:bg-black transition-all font-bold border-gray-800 rounded-full"
                         onClick={handleLogout}
                       >
                         Logout
@@ -248,13 +248,15 @@ const Header = ({ view, setView }: PropsType) => {
                   ) : (
                     <>
                       <p className="text-gray-800 font-semibold mb-2">
-                        Sign in with Google
+                        Sign in
                       </p>
                       <GoogleLogin
                         onSuccess={handleLoginSuccess}
                         onError={() => {
                           console.log("Login Failed");
                         }}
+                        shape="circle"
+                        width={80}
                       />
                     </>
                   )}

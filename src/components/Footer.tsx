@@ -1,4 +1,5 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useState } from "react";
 
 type ViewType = "products" | "cart" | "orders";
 
@@ -8,6 +9,19 @@ type PropsType = {
 };
 
 const Footer = ({ view, setView }: PropsType) => {
+  const [email, setEmail] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSubscribe = () => {
+    if (email) {
+      setShowPopup(true);
+      setEmail("");
+    }
+    else {
+      console.error("Email is required");
+    }
+  };
+
   return (
     <>
       <footer>
@@ -18,14 +32,24 @@ const Footer = ({ view, setView }: PropsType) => {
                 <h2 className="text-4xl md:text-5xl font-bold mb-10 leading-snug text-white text-center">
                   SUBSCRIBE TO OUR NEWSLETTER
                 </h2>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="px-6 py-4 border border-gray-300 mb-6 w-full"
-                />
-                <button className="px-6 py-4 w-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-300">
-                  Subscribe
-                </button>
+                <form className="w-full" onSubmit={(e) => {
+                e.preventDefault();
+                handleSubscribe();
+              }}>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="px-6 py-4 border border-gray-300 mb-6 w-full"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <button type="submit"
+                    className="px-6 py-4 w-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-300"
+                  >
+                    Subscribe
+                  </button>
+                </form>
               </div>
             </div>
           </div>
@@ -37,7 +61,7 @@ const Footer = ({ view, setView }: PropsType) => {
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
                     <div>
-                      <img src="/logo.png" alt="" />
+                      <img src="/logo.svg" alt="" />
                     </div>
                   </div>
                 </div>
@@ -64,7 +88,9 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("products")}
-                      className={`underline-hover ${view === "products" ? "active" : ""}`}
+                      className={`underline-hover ${
+                        view === "products" ? "active" : ""
+                      }`}
                     >
                       Products
                     </button>
@@ -72,7 +98,9 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("cart")}
-                      className={`underline-hover ${view === "cart" ? "active" : ""}`}
+                      className={`underline-hover ${
+                        view === "cart" ? "active" : ""
+                      }`}
                     >
                       Cart
                     </button>
@@ -80,7 +108,9 @@ const Footer = ({ view, setView }: PropsType) => {
                   <div>
                     <button
                       onClick={() => setView("orders")}
-                      className={`underline-hover ${view === "orders" ? "active" : ""}`}
+                      className={`underline-hover ${
+                        view === "orders" ? "active" : ""
+                      }`}
                     >
                       Orders
                     </button>
@@ -110,7 +140,6 @@ const Footer = ({ view, setView }: PropsType) => {
                       </a>
                     </li>
                     <li className="flex items-center justify-center">
-                      
                       <a
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
                         href=""
@@ -120,7 +149,6 @@ const Footer = ({ view, setView }: PropsType) => {
                       </a>
                     </li>
                     <li>
-                      
                       <a
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
                         href=""
@@ -130,7 +158,6 @@ const Footer = ({ view, setView }: PropsType) => {
                       </a>
                     </li>
                     <li>
-                      
                       <a
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
                         href=""
@@ -145,16 +172,38 @@ const Footer = ({ view, setView }: PropsType) => {
             </div>
             <div className="pt-12 md:pb-0">
               <div className="row opacity-[0.2]">
-                  <div className=" bg-gray-200 h-[0.01rem]" />
+                <div className=" bg-gray-200 h-[0.01rem]" />
               </div>
               <div className="w-full py-6 md:flex text-sm md:text-base font-medium items-center text-gray-400 justify-center md:justify-between">
-                <div className="text-center md:text-start mb-2 md:mb-0">&copy; Created By VogueNest</div>
-                <div className="text-center md:text-end">All Rights Reserved.</div>
+                <div className="text-center md:text-start mb-2 md:mb-0">
+                  &copy; Created By VogueNest
+                </div>
+                <div className="text-center md:text-end">
+                  All Rights Reserved.
+                </div>
               </div>
             </div>
           </div>
         </div>
       </footer>
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-2 right-4 text-3xl hover:text-gray-600 text-red-600 transition-colors duration-300"
+            >
+              &times;
+            </button>
+            <h3 className="text-xl font-bold mb-4">
+              Thank you for subscribing!
+            </h3>
+            <p className="mb-4">
+              You have successfully subscribed to our newsletter.
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
