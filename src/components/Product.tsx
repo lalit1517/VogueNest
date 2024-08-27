@@ -48,7 +48,7 @@ const Product = ({
 
         <div className={`bottom ${isClicked ? "clicked" : ""}`}>
           <div className="left">
-            <div className="details text-white sm:text-base lg:text-xl flex items-center justify-center w-3/4">
+            <div className="details cursor-default text-white sm:text-base lg:text-xl flex items-center justify-center w-3/4">
               <p>
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
@@ -64,7 +64,7 @@ const Product = ({
             <div className="done cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center">
               <i className="fa-solid fa-check"></i>
             </div>
-            <div className="details h-1/2 sm:text-base lg:text-xl flex text-center items-center justify-center w-3/4">
+            <div className="details cursor-default h-1/2 sm:text-base lg:text-xl flex text-center items-center justify-center w-3/4">
               <p>Added to your cart</p>
             </div>
             <div className="remove cursor-pointer sm:text-lg lg:text-2xl flex items-center justify-center w-1/4" onClick={onRemoveFromCart}>

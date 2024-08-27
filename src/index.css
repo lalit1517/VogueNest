@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 .offscreen {
   position: absolute;
   left: -10000px;
@@ -382,14 +386,12 @@ img {
 .bottom .right .done {
   float: left;
   transition: transform 0.5s;
-  border-right: solid thin rgba(255, 255, 255, 0.3);
   height: 50%;
   background: #a6cdde;
 }
 
 .bottom .right .remove {
   clear: both;
-  border-right: solid thin rgba(255, 255, 255, 0.3);
   height: 50%;
   background: #E53935;
   transition: transform 0.5s, background 0.5s;
