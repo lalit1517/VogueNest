@@ -1,6 +1,7 @@
 import { ProductType } from "../context/ProductsProvider";
 import { ReducerActionType, ReducerAction } from "../context/CartProvider";
 import { ReactElement, memo, useState, useEffect } from "react";
+import Skeleton from "@mui/material/Skeleton";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 type PropsType = {
@@ -20,7 +21,17 @@ const Product = ({
     return storedState ? JSON.parse(storedState) : false;
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const img: string = `https://cart-services-jntk.onrender.com/public/images/${product.sku}.jpeg`;
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = img;
+    image.onload = () => {
+      setIsLoading(false);
+    };
+  }, [img]);
 
   const onAddToCart = () => {
     dispatch({ type: REDUCER_ACTIONS.ADD, payload: { ...product, qty: 1 } });
@@ -40,10 +51,14 @@ const Product = ({
     <>
       <article className="product">
         <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">
-          <div className="sm:h-12 md:h-20 lg:h-24 text-red-600 text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
+          <div className="sm:h-16 md:h-20 lg:h-24 text-red-600 text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
             <div>{product.name}</div>
           </div>
-          <img src={img} alt={product.name} className="w-full" />
+          {isLoading ? (
+            <Skeleton variant="rectangular" width="100%" height={325} animation="pulse" />
+          ) : (
+            <img src={img} alt={product.name} className="w-full" />
+          )}
         </div>
 
         <div className={`bottom ${isClicked ? "clicked" : ""}`}>
@@ -57,7 +72,7 @@ const Product = ({
               </p>
             </div>
             <div className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white" onClick={onAddToCart}>
-              <i className=" fa-solid fa-cart-plus"></i>
+              <i className="fa-solid fa-cart-plus"></i>
             </div>
           </div>
           <div className="right">
@@ -75,6 +90,7 @@ const Product = ({
       </article>
     </>
   );
+
   return content;
 };
 
