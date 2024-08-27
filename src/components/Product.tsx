@@ -17,7 +17,7 @@ const Product = ({
   inCart,
 }: PropsType): ReactElement => {
   const [isClicked, setIsClicked] = useState<boolean>(() => {
-    const storedState = localStorage.getItem(`isClicked-${product.sku}`);
+    const storedState = localStorage.getItem(`${product.sku}`);
     return storedState ? JSON.parse(storedState) : false;
   });
 
@@ -34,9 +34,8 @@ const Product = ({
     setIsClicked(false);
   };
 
-  // Store the `isClicked` state in localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem(`isClicked-${product.sku}`, JSON.stringify(isClicked));
+    localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
   }, [isClicked, product.sku]);
 
   const itemInCart = inCart ? " → Item in Cart: ✔️" : null;

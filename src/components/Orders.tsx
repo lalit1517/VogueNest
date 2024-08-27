@@ -20,8 +20,7 @@ type OrderType = {
     price: number;
   }[];
   totalPrice: string;
-  paymentId: string;
-  paymentStatus: boolean;
+  paymentMode: string;
   orderDate: string;
   expectedArrivalDate: string;
 };
@@ -77,7 +76,7 @@ const Orders = () => {
                 <span className="font-semibold">Address:</span> {order.address.houseNo}, {order.address.street}, {order.address.city}, {order.address.state}
               </p>
               <p className="mb-1"><span className="font-semibold">Total Price:</span> {order.totalPrice}</p>
-              <p className="mb-1"><span className="font-semibold">Payment ID:</span> {order.paymentId}</p>
+              <p className="mb-1"><span className="font-semibold">Payment Mode:</span> {order.paymentMode}</p>
               <p className="mb-1"><span className="font-semibold">Date of Order:</span> {order.orderDate}</p>
               <p className="mb-4"><span className="font-semibold">Expected date of Arrival:</span> {order.expectedArrivalDate}</p>
               <h4 className="text-lg font-semibold mb-2">Items:</h4>

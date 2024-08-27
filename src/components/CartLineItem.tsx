@@ -30,10 +30,20 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
         })
     }
 
-    const onRemoveFromCart = () => dispatch({
-        type: REDUCER_ACTIONS.REMOVE,
-        payload: item,
-    })
+    const onRemoveFromCart = () => {
+
+        console.log(`Removing item with SKU: ${item.sku}`);
+    
+        dispatch({
+            type: REDUCER_ACTIONS.REMOVE,
+            payload: item,
+        });
+    
+        const localStorageKey = `${item.sku}`;
+        if (localStorage.getItem(localStorageKey)) {
+            localStorage.removeItem(localStorageKey);
+        }
+    };
 
     const content = (
         <li className="cart__item">
