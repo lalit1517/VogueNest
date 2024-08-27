@@ -14,7 +14,6 @@ const Product = ({
   product,
   dispatch,
   REDUCER_ACTIONS,
-  inCart,
 }: PropsType): ReactElement => {
   const [isClicked, setIsClicked] = useState<boolean>(() => {
     const storedState = localStorage.getItem(`${product.sku}`);
@@ -22,7 +21,6 @@ const Product = ({
   });
 
   const img: string = `https://cart-services-jntk.onrender.com/public/images/${product.sku}.jpeg`;
-  console.log(img);
 
   const onAddToCart = () => {
     dispatch({ type: REDUCER_ACTIONS.ADD, payload: { ...product, qty: 1 } });
@@ -37,8 +35,6 @@ const Product = ({
   useEffect(() => {
     localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
   }, [isClicked, product.sku]);
-
-  const itemInCart = inCart ? " → Item in Cart: ✔️" : null;
 
   const content = (
     <>
@@ -58,7 +54,6 @@ const Product = ({
                   style: "currency",
                   currency: "USD",
                 }).format(product.price)}
-                {itemInCart}
               </p>
             </div>
             <div className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white" onClick={onAddToCart}>

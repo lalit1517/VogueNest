@@ -116,6 +116,12 @@ const Cart = () => {
       if (res.ok) {
         console.log("Order submitted successfully");
         dispatch({ type: REDUCER_ACTIONS.SUBMIT });
+        orderData.items.forEach(item => {
+          const key = item.sku;
+          if (localStorage.getItem(key)) {
+            localStorage.removeItem(key);
+          }
+        });
       } else {
         const errorData = await res.json();
         console.error("Failed to submit order:", errorData);
