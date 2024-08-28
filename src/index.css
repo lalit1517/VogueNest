@@ -418,8 +418,11 @@ img {
 }
 
 [data-rmiz-modal-img],
-[data-rmiz-btn-unzoom],
 [data-rmiz-content="found"] img
  {
   cursor: pointer;
+}
+
+[data-rmiz-btn-unzoom]{
+  visibility: hidden;
 }
