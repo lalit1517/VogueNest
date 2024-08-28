@@ -29,7 +29,7 @@ const ProductList = () => {
                 borderRadius={0}
                 height="100%"
                 width="100%"
-                containerClassName="w-full h-[360px] sm:h-[154px] md:h-[210px] lg:h-[280px] xl:h-[388px]"
+                containerClassName="w-full h-[340px] sm:h-[154px] md:h-[210px] lg:h-[280px] xl:h-[388px]"
               />
             </SkeletonTheme>
             <SkeletonTheme baseColor="#A9A9A9" highlightColor="#E5E4E2">
