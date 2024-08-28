@@ -22,7 +22,8 @@ type OrderType = {
     price: number;
   }[];
   totalPrice: string;
-  paymentMode: string;
+  paymentId: string;
+  paymentStatus: boolean;
   orderDate: string;
   expectedArrivalDate: string;
 };
@@ -45,6 +46,20 @@ const Cart = () => {
   const [state, setState] = useState<string>("");
   const { dispatch, REDUCER_ACTIONS, totalItems, totalPrice, cart } = useCart();
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
   const onPlaceOrderClick = () => {
     const token = localStorage.getItem("google_jwt");
     if (token) {
@@ -53,10 +68,10 @@ const Cart = () => {
         setUser(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
-        setUser(null); 
+        setUser(null);
       }
     } else {
-      setUser(null); 
+      setUser(null);
     }
 
     setShowModal(true);
@@ -67,72 +82,102 @@ const Cart = () => {
       alert("Please fill all the required fields.");
       return;
     }
-  
+
     setShowModal(false);
-  
-    const userId = localStorage.getItem("userId"); 
-  
+
+    const res = await loadRazorpayScript();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    const userId = localStorage.getItem("userId");
+
     const orderDate = new Date();
     const expectedArrivalDate = new Date(orderDate);
     expectedArrivalDate.setDate(orderDate.getDate() + 3);
-  
+
     const formattedOrderDate = orderDate.toISOString().split("T")[0];
     const formattedExpectedArrivalDate = expectedArrivalDate
       .toISOString()
       .split("T")[0];
-  
-    const orderData: OrderType = {
-      userId: userId || "",
-      name,
-      email,
-      phone,
-      address: {
-        houseNo,
-        street,
-        city,
-        state,
-      },
-      items: cart.map((item) => ({
-        sku: item.sku,
-        name: item.name,
-        quantity: item.qty,
-        price: item.price,
-      })),
-      totalPrice,
-      paymentMode: "Cash on Delivery",
-      orderDate: formattedOrderDate,
-      expectedArrivalDate: formattedExpectedArrivalDate,
-    };
-  
-    try {
-      const res = await fetch("https://cart-services-jntk.onrender.com/api/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
-  
-      if (res.ok) {
-        console.log("Order submitted successfully");
-        dispatch({ type: REDUCER_ACTIONS.SUBMIT });
-        orderData.items.forEach(item => {
-          const key = item.sku;
-          if (localStorage.getItem(key)) {
-            localStorage.removeItem(key);
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      currency: "INR",
+      name: name,
+      description: "Thank you for your purchase",
+      image: "https://vogue-nest.vercel.app/logo.svg",
+      handler: async function (response: any) {
+        try {
+          const orderData: OrderType = {
+            userId: userId || "",
+            name,
+            email,
+            phone,
+            address: {
+              houseNo,
+              street,
+              city,
+              state,
+            },
+            items: cart.map((item) => ({
+              sku: item.sku,
+              name: item.name,
+              quantity: item.qty,
+              price: item.price,
+            })),
+            totalPrice,
+            paymentId: response.razorpay_payment_id,
+            paymentStatus: true,
+            orderDate: formattedOrderDate,
+            expectedArrivalDate: formattedExpectedArrivalDate,
+          };
+
+          const res = await fetch(
+            "https://cart-services-jntk.onrender.com/api/order",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(orderData),
+            }
+          );
+
+          if (res.ok) {
+            console.log("Payment Successful");
+            dispatch({ type: REDUCER_ACTIONS.SUBMIT });
+            orderData.items.forEach((item) => {
+              const key = item.sku;
+              if (localStorage.getItem(key)) {
+                localStorage.removeItem(key);
+              }
+            });
+          } else {
+            alert("Failed to save order");
           }
-        });
-      } else {
-        const errorData = await res.json();
-        console.error("Failed to submit order:", errorData);
-        alert(`Failed to save order: ${errorData.message || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Error occurred while saving order:", error);
-      alert("An error occurred while saving the order. Please try again.");
-    }
+        } catch (error) {
+          console.log("Error occurred while saving order");
+        }
+      },
+      prefill: {
+        name: name,
+        email: email,
+        contact: phone,
+      },
+      notes: {
+        address: `${houseNo}, ${street}, ${city}, ${state}`,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const paymentObject = new (window as any).Razorpay(options);
+    paymentObject.open();
   };
-  
 
   const pageContent = (
     <>
