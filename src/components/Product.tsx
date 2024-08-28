@@ -1,8 +1,8 @@
 import { ProductType } from "../context/ProductsProvider";
 import { ReducerActionType, ReducerAction } from "../context/CartProvider";
 import { ReactElement, memo, useState, useEffect } from "react";
-import Skeleton from "@mui/material/Skeleton";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type PropsType = {
   product: ProductType;
@@ -51,11 +51,17 @@ const Product = ({
     <>
       <article className="product">
         <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">
-          <div className="sm:h-16 md:h-20 lg:h-24 text-red-600 text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
+          <div className="sm:h-16 md:h-20 lg:h-24 text-[#E53935] text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
             <div>{product.name}</div>
           </div>
           {isLoading ? (
-            <Skeleton variant="rectangular" width="100%" height={325} animation="pulse" />
+            <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
+              <Skeleton
+                height="100%"
+                width="100%"
+                containerClassName="w-full h-[370px] sm:h-[154] md:h-[210px] lg:h-[280px] xl:h-[334px] 2xl:h-[388px]"
+              />
+            </SkeletonTheme>
           ) : (
             <img src={img} alt={product.name} className="w-full" />
           )}
@@ -71,7 +77,10 @@ const Product = ({
                 }).format(product.price)}
               </p>
             </div>
-            <div className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white" onClick={onAddToCart}>
+            <div
+              className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white"
+              onClick={onAddToCart}
+            >
               <i className="fa-solid fa-cart-plus"></i>
             </div>
           </div>
@@ -82,7 +91,10 @@ const Product = ({
             <div className="details cursor-default h-1/2 sm:text-base lg:text-xl flex text-center items-center justify-center w-3/4">
               <p>Added to your cart</p>
             </div>
-            <div className="remove cursor-pointer sm:text-lg lg:text-2xl flex items-center justify-center w-1/4" onClick={onRemoveFromCart}>
+            <div
+              className="remove cursor-pointer sm:text-lg lg:text-2xl flex items-center justify-center w-1/4"
+              onClick={onRemoveFromCart}
+            >
               <i className="fa-solid fa-xmark"></i>
             </div>
           </div>
