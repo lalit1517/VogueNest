@@ -17,6 +17,7 @@ const ProductList = () => {
             <div className="sm:h-16 md:h-20 lg:h-24 mb-3 sm:mb-4 lg:mb-0 text-[#E53935] text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
               <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
                 <Skeleton
+                  borderRadius={0}
                   width="100%"
                   height="100%"
                   containerClassName="w-full h-[28px] sm:h-[40px] md:h-[56px] xl:h-[28px]"
@@ -25,13 +26,15 @@ const ProductList = () => {
             </div>
             <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
               <Skeleton
+                borderRadius={0}
                 height="100%"
                 width="100%"
-                containerClassName="w-full h-[370px] sm:h-[154px] md:h-[210px] lg:h-[280px] xl:h-[334px] 2xl:h-[388px]"
+                containerClassName="w-full h-[360px] sm:h-[154px] md:h-[210px] lg:h-[280px] xl:h-[388px]"
               />
             </SkeletonTheme>
             <SkeletonTheme baseColor="#A9A9A9" highlightColor="#E5E4E2">
               <Skeleton
+                borderRadius={0}
                 width="100%"
                 height="100%"
                 containerClassName="w-full h-[75px] sm:h-[55px] md:h-[62px] lg:h-[73px] xl:h-[81px] 2xl:h-[89px]"

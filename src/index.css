@@ -417,4 +417,9 @@ img {
   transform: translateY(-100%);
 }
 
-
+[data-rmiz-modal-img],
+[data-rmiz-btn-unzoom],
+[data-rmiz-content="found"] img
+ {
+  cursor: pointer;
+}

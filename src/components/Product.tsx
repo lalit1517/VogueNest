@@ -1,8 +1,10 @@
 import { ProductType } from "../context/ProductsProvider";
 import { ReducerActionType, ReducerAction } from "../context/CartProvider";
-import { ReactElement, memo, useState, useEffect } from "react";
+import { ReactElement, memo, useState, useEffect, useCallback } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { Controlled as ControlledZoom } from "react-medium-image-zoom";
 import "react-loading-skeleton/dist/skeleton.css";
+import "react-medium-image-zoom/dist/styles.css";
 
 type PropsType = {
   product: ProductType;
@@ -22,6 +24,15 @@ const Product = ({
   });
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  const handleZoomChange = useCallback(
+    (shouldZoom: boolean | ((prevState: boolean) => boolean)) => {
+      setIsZoomed(shouldZoom);
+    },
+    []
+  );
 
   const img: string = `https://cart-services-jntk.onrender.com/public/images/${product.sku}.jpeg`;
 
@@ -47,7 +58,7 @@ const Product = ({
     localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
   }, [isClicked, product.sku]);
 
-  const content = (
+  return (
     <>
       <article className="product">
         <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">
@@ -57,13 +68,16 @@ const Product = ({
           {isLoading ? (
             <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
               <Skeleton
+                borderRadius={0}
                 height="100%"
                 width="100%"
-                containerClassName="w-full h-[370px] sm:h-[154] md:h-[210px] lg:h-[280px] xl:h-[334px] 2xl:h-[388px]"
+                containerClassName="w-full h-[360px] sm:h-[154] md:h-[210px] lg:h-[280px] xl:h-[388px]"
               />
             </SkeletonTheme>
           ) : (
-            <img src={img} alt={product.name} className="w-full" />
+            <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
+              <img src={img} alt={product.name} className="w-full" />
+            </ControlledZoom>
           )}
         </div>
 
@@ -102,8 +116,6 @@ const Product = ({
       </article>
     </>
   );
-
-  return content;
 };
 
 function areProductsEqual(
@@ -119,6 +131,7 @@ function areProductsEqual(
     }) && prevInCart === nextInCart
   );
 }
+
 const MemoizedProduct = memo<typeof Product>(Product, areProductsEqual);
 
 export default MemoizedProduct;
