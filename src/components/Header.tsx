@@ -194,7 +194,7 @@ const Header = () => {
         </div>
 
         {/* Navigation Links - Desktop */}
-        <nav className="hidden md:flex items-center justify-evenly w-1/3">
+        <nav className="hidden md:flex items-center justify-evenly w-1/2 xl:w-1/3 gap-2 xl:gap-0">
           <div
             className={`underline-hover font-bold transition-all duration-300 ${
               activeItem === "Home" ? "active text-[#E53935]" : "text-white"
@@ -242,7 +242,7 @@ const Header = () => {
                   Welcome, {user.name}
                 </p>
               ) : (
-                <p className="text-gray-800 transition-all duration-300 font-semibold mb-2"></p>
+                <p className="text-white transition-all duration-300 text-sm lg:text-base font-medium"></p>
               )}
               <img
                 ref={profilePicRef}
