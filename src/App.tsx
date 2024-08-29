@@ -1,48 +1,26 @@
+import { BrowserRouter as Router } from "react-router-dom";
+import Routers from "./router/Router";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Cart from "./components/Cart";
-import ProductList from "./components/ProductList";
-import Orders from "./components/Orders";
-import { useState, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
-
-type ViewType = "products" | "cart" | "orders";
+import { WavyContainer } from "react-wavy-transitions";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-  const [view, setView] = useState<ViewType>("products");
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [view]);
-
-  let pageContent;
-  switch (view) {
-    case "cart":
-      pageContent = <Cart />;
-      break;
-    case "orders":
-      pageContent = <Orders />;
-      break;
-    default:
-      pageContent = <ProductList />;
-  }
-
-  const content = (
-    <>
-      <AuthProvider>
-        <Header view={view} setView={setView} />
-        <div className="pt-[97px]"> 
-          {pageContent}
+  return (
+    <AuthProvider>
+      <Router>
+      <ScrollToTop />
+        <WavyContainer />
+        <Header />
+        <div className="pt-[97px]">
+          <Routers />
         </div>
-        <Footer view={view} setView={setView} />
-      </AuthProvider>
-    </>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
-
-  return content;
 }
 
 export default App;

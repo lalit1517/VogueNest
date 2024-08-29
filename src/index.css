@@ -219,6 +219,10 @@ img {
 
 /* Header */
 
+header{
+  z-index: 9999;
+}
+
 .header.active-menu {
   top: 0;
 }
@@ -425,4 +429,8 @@ img {
 
 [data-rmiz-btn-unzoom]{
   visibility: hidden;
+}
+
+#react-wavy-transitions__container{
+  z-index: 10001;
 }

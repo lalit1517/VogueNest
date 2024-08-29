@@ -1,14 +1,8 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useState } from "react";
+import { WavyLink } from "react-wavy-transitions";
 
-type ViewType = "products" | "cart" | "orders";
-
-type PropsType = {
-  view: ViewType;
-  setView: React.Dispatch<React.SetStateAction<ViewType>>;
-};
-
-const Footer = ({ view, setView }: PropsType) => {
+const Footer = () => {
   const [email, setEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
@@ -66,7 +60,9 @@ const Footer = ({ view, setView }: PropsType) => {
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
                     <div>
-                      <img src="/logo.svg" alt="" />
+                      <WavyLink to="/" color="#E53935">
+                        <img src="/logo.svg" alt="" />
+                      </WavyLink>
                     </div>
                   </div>
                 </div>
@@ -89,36 +85,27 @@ const Footer = ({ view, setView }: PropsType) => {
                     <div className="w-[60px] bg-red-600 h-1"></div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 text-gray-400 text-sm md:text-lg text-center md:text-start font-medium">
+                <div className="flex flex-col gap-2 text-gray-400 items-center md:items-start text-center md:text-start font-medium">
                   <div>
-                    <button
-                      onClick={() => setView("products")}
-                      className={`underline-hover ${
-                        view === "products" ? "active" : ""
-                      }`}
-                    >
-                      Products
-                    </button>
+                    <WavyLink to="/products" color="#E53935">
+                      <div className="underline-hover w-fit text-sm md:text-lg">
+                        Products
+                      </div>
+                    </WavyLink>
                   </div>
                   <div>
-                    <button
-                      onClick={() => setView("cart")}
-                      className={`underline-hover ${
-                        view === "cart" ? "active" : ""
-                      }`}
-                    >
-                      Cart
-                    </button>
+                    <WavyLink to="/cart" color="#E53935">
+                    <div className="underline-hover w-fit text-sm md:text-lg">
+                        Cart
+                      </div>
+                    </WavyLink>
                   </div>
                   <div>
-                    <button
-                      onClick={() => setView("orders")}
-                      className={`underline-hover ${
-                        view === "orders" ? "active" : ""
-                      }`}
-                    >
-                      Orders
-                    </button>
+                    <WavyLink to="/orders" color="#E53935">
+                    <div className="underline-hover w-fit text-sm md:text-lg">
+                        Orders
+                      </div>
+                    </WavyLink>
                   </div>
                 </div>
               </div>
@@ -136,40 +123,40 @@ const Footer = ({ view, setView }: PropsType) => {
                 <div className="flex flex-col gap-2 text-gray-400 text-sm md:text-lg  font-medium">
                   <ul className="flex gap-10 justify-between">
                     <li>
-                      <a
-                        className="text-gray-400 text-[0.8rem] md:text-[1rem]"
-                        href=""
-                        target="_blank"
+                      <WavyLink
+                        color="#E53935"
+                        className="text-gray-400"
+                        to=""
                       >
-                        <i className="fa-brands fa-facebook-f opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
-                      </a>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-facebook-f opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                      </WavyLink>
                     </li>
                     <li className="flex items-center justify-center">
-                      <a
+                      <WavyLink
+                        color="#E53935"
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
-                        href=""
-                        target="_blank"
+                        to=""
                       >
-                        <i className="fa-brands fa-x-twitter opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
-                      </a>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-x-twitter opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                      </WavyLink>
                     </li>
                     <li>
-                      <a
+                      <WavyLink
+                        color="#E53935"
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
-                        href=""
-                        target="_blank"
+                        to=""
                       >
-                        <i className="fa-brands fa-instagram opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
-                      </a>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-instagram opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                      </WavyLink>
                     </li>
                     <li>
-                      <a
+                      <WavyLink
+                        color="#E53935"
                         className="text-gray-400 text-[0.8rem] md:text-[1rem]"
-                        href=""
-                        target="_blank"
+                        to=""
                       >
-                        <i className="fa-brands fa-linkedin-in opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
-                      </a>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-linkedin-in opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                      </WavyLink>
                     </li>
                   </ul>
                 </div>

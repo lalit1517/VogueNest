@@ -1,15 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-
-type ViewType = "products" | "cart" | "orders";
-
-type PropsType = {
-  view: ViewType;
-  setView: React.Dispatch<React.SetStateAction<ViewType>>;
-};
+import { WavyLink } from "react-wavy-transitions";
+import { useLocation } from "react-router-dom";
 
 interface DecodedJwtPayload extends JwtPayload {
   name?: string;
@@ -17,7 +12,7 @@ interface DecodedJwtPayload extends JwtPayload {
   sub?: string;
 }
 
-const Header = ({ view, setView }: PropsType) => {
+const Header = () => {
   const { user, setUser } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -99,7 +94,7 @@ const Header = ({ view, setView }: PropsType) => {
       }
       return newMenuOpen;
     });
-  };  
+  };
 
   const buttonVariants = {
     hidden: {
@@ -165,6 +160,23 @@ const Header = ({ view, setView }: PropsType) => {
     };
   }, [lastScrollY]);
 
+  const location = useLocation();
+
+  const [activeItem, setActiveItem] = useState("Home");
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    if (pathname === "/") {
+      setActiveItem("Home");
+    } else if (pathname === "/products") {
+      setActiveItem("Products");
+    } else if (pathname === "/cart") {
+      setActiveItem("Cart");
+    } else if (pathname === "/orders") {
+      setActiveItem("Orders");
+    }
+  }, [location.pathname]);
+
   return (
     <header
       className={` bg-black shadow fixed w-full z-[10000] ${
@@ -174,37 +186,51 @@ const Header = ({ view, setView }: PropsType) => {
       <div className="container container-xl-custom h-[97px] flex items-center py-6 justify-between md:justify-center">
         {/* Logo Section */}
         <div className="w-1/3 flex items-center justify-start">
-          <a href="/" className="text-xl font-bold text-gray-800">
-            <img src="/logo.svg" alt="Logo" />
-          </a>
+          <div>
+            <WavyLink to="/" color="#E53935">
+              <img src="/logo.svg" alt="Logo" />
+            </WavyLink>
+          </div>
         </div>
 
         {/* Navigation Links - Desktop */}
         <nav className="hidden md:flex items-center justify-evenly w-1/3">
-          <button
+          <div
             className={`underline-hover font-bold transition-all duration-300 ${
-              view === "products" ? "active text-[#E53935]" : "text-white"
+              activeItem === "Home" ? "active text-[#E53935]" : "text-white"
             }`}
-            onClick={() => setView("products")}
           >
-            Products
-          </button>
-          <button
+            <WavyLink to="/" color="#E53935">
+              Home
+            </WavyLink>
+          </div>
+          <div
             className={`underline-hover font-bold transition-all duration-300 ${
-              view === "cart" ? "active text-[#E53935]" : "text-white"
+              activeItem === "Products" ? "active text-[#E53935]" : "text-white"
             }`}
-            onClick={() => setView("cart")}
           >
-            Cart
-          </button>
-          <button
+            <WavyLink to="/products" color="#E53935">
+              Products
+            </WavyLink>
+          </div>
+          <div
+            className={`underline-hover font-bold transition-all duration-300 ${
+              activeItem === "Cart" ? "active text-[#E53935]" : "text-white"
+            }`}
+          >
+            <WavyLink to="/cart" color="#E53935">
+              Cart
+            </WavyLink>
+          </div>
+          <div
             className={` underline-hover font-bold transition-all duration-300 ${
-              view === "orders" ? "active text-[#E53935]" : "text-white"
+              activeItem === "Orders" ? "active text-[#E53935]" : "text-white"
             }`}
-            onClick={() => setView("orders")}
           >
-            Orders
-          </button>
+            <WavyLink to="/orders" color="#E53935">
+              Orders
+            </WavyLink>
+          </div>
         </nav>
 
         {/* Profile and Login/Logout Section - Desktop */}
@@ -346,45 +372,71 @@ const Header = ({ view, setView }: PropsType) => {
               }`}
             >
               <nav className="flex min-h-screen pt-48 flex-col items-center space-y-6">
-                <motion.button
+              <motion.div
                   variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "products" ? "active text-[#E53935]" : "text-white"
+                  className={`${
+                    activeItem === "Home"
+                      ? "active text-[#E53935] text-4xl"
+                      : "text-white text-4xl"
                   }`}
                   onClick={() => {
-                    setView("products");
                     setMenuOpen(false);
                     document.body.classList.remove("noscroll");
                   }}
                 >
-                  Products
-                </motion.button>
-                <motion.button
+                  <WavyLink to="/" color="#E53935">
+                    <div className="text-4xl">Home</div>
+                  </WavyLink>
+                </motion.div>
+                <motion.div
                   variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "cart" ? "active text-[#E53935]" : "text-white"
+                  className={`${
+                    activeItem === "Products"
+                      ? "active text-[#E53935] text-4xl"
+                      : "text-white text-4xl"
                   }`}
                   onClick={() => {
-                    setView("cart");
                     setMenuOpen(false);
                     document.body.classList.remove("noscroll");
                   }}
                 >
-                  Cart
-                </motion.button>
-                <motion.button
+                  <WavyLink to="/products" color="#E53935">
+                    <div className="text-4xl">Products</div>
+                  </WavyLink>
+                </motion.div>
+                <motion.div
                   variants={buttonVariants}
-                  className={`text-4xl ${
-                    view === "orders" ? "active text-[#E53935]" : "text-white"
+                  className={`${
+                    activeItem === "Cart"
+                      ? "active text-[#E53935] text-4xl"
+                      : "text-white text-4xl"
                   }`}
                   onClick={() => {
-                    setView("orders");
                     setMenuOpen(false);
                     document.body.classList.remove("noscroll");
                   }}
                 >
-                  Orders
-                </motion.button>
+                  <WavyLink to="/cart" color="#E53935">
+                    <div className="text-4xl">Cart</div>
+                  </WavyLink>
+                </motion.div>
+                <motion.div
+                  variants={buttonVariants}
+                  className={`${
+                    activeItem === "Orders"
+                      ? "active text-[#E53935] text-4xl"
+                      : "text-white text-4xl"
+                  }`}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    document.body.classList.remove("noscroll");
+                  }}
+                >
+                  <WavyLink to="/orders" color="#E53935">
+                    <div className="text-4xl">Orders</div>
+                  </WavyLink>
+                </motion.div>
+                
                 <div
                   className={`flex items-center justify-center w-full bottom-44 absolute`}
                 >
