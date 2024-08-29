@@ -18,6 +18,10 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profilePicRef = useRef<HTMLImageElement>(null);
+  const defaultPic = "https://img.icons8.com/bubbles/50/user.png";
+  const [profilePic, setProfilePic] = useState(
+    user && user.picture ? user.picture : defaultPic
+  );
 
   useEffect(() => {
     const token = localStorage.getItem("google_jwt");
@@ -79,6 +83,16 @@ const Header = () => {
       console.error("Credential is undefined");
     }
   };
+
+  useEffect(() => {
+    if (user && user.picture) {
+      setProfilePic(user.picture);
+    } else {
+      setProfilePic(defaultPic);
+    }
+  }, [user]);
+
+  const firstName = user?.name?.split(" ")[0] || "";
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -194,7 +208,7 @@ const Header = () => {
         </div>
 
         {/* Navigation Links - Desktop */}
-        <nav className="hidden md:flex items-center justify-evenly w-1/2 xl:w-1/3 gap-2 xl:gap-0">
+        <nav className="hidden md:flex items-center justify-between w-1/2 xl:w-1/3 ">
           <div
             className={`underline-hover font-bold transition-all duration-300 ${
               activeItem === "Home" ? "active text-[#E53935]" : "text-white"
@@ -239,7 +253,7 @@ const Header = () => {
             <div className="flex items-center gap-2">
               {user ? (
                 <p className="text-white transition-all duration-300 text-sm lg:text-base font-medium">
-                  Welcome, {user.name}
+                  Welcome, {firstName}
                 </p>
               ) : (
                 <p className="text-white transition-all duration-300 text-sm lg:text-base font-medium"></p>
@@ -249,9 +263,7 @@ const Header = () => {
                 className={`transition-all duration-300 ${
                   user ? "w-[35px] h-[35px]" : "w-[42px] h-[42px]"
                 }  rounded-full cursor-pointer`}
-                src={
-                  user?.picture || "https://img.icons8.com/bubbles/50/user.png"
-                }
+                src={profilePic}
                 alt={user?.name || "User"}
                 onClick={toggleDropdown}
               />
@@ -372,7 +384,7 @@ const Header = () => {
               }`}
             >
               <nav className="flex min-h-screen pt-48 flex-col items-center space-y-6">
-              <motion.div
+                <motion.div
                   variants={buttonVariants}
                   className={`${
                     activeItem === "Home"
@@ -436,7 +448,7 @@ const Header = () => {
                     <div className="text-4xl">Orders</div>
                   </WavyLink>
                 </motion.div>
-                
+
                 <div
                   className={`flex items-center justify-center w-full bottom-44 absolute`}
                 >
