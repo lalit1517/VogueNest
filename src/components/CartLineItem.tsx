@@ -1,7 +1,9 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import { CartItemType } from "../context/CartProvider";
 import { ReducerAction } from "../context/CartProvider";
 import { ReducerActionType } from "../context/CartProvider";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type PropsType = {
   item: CartItemType;
@@ -10,7 +12,17 @@ type PropsType = {
 };
 
 const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const img: string = `https://cart-services-jntk.onrender.com/public/images/${item.sku}.jpeg`;
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = img;
+    image.onload = () => {
+      setIsLoading(false);
+    };
+  }, [img]);
 
   const lineTotal: number = item.qty * item.price;
 
@@ -31,33 +43,39 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
   };
 
   const onRemoveFromCart = () => {
-    console.log(`Removing item with SKU: ${item.sku}`);
-
     dispatch({
       type: REDUCER_ACTIONS.REMOVE,
       payload: item,
     });
-
-    const localStorageKey = `${item.sku}`;
-    if (localStorage.getItem(localStorageKey)) {
-      localStorage.removeItem(localStorageKey);
-    }
   };
 
   const content = (
     <li className="list-none">
-      <div className="flex justify-between relative items-stretch container h-20">
-        <div className="flex items-start gap-6 w-2/3 item-in-cart">
-          <div className="relative w-1/2 h-20">
-            <img src={img} alt={item.name} className="h-20 w-20" />
-            <button
-              className="absolute left-[83%] bottom-[83%] text-xs bg-black text-white p-1 rounded-full"
-              aria-label="Remove Item From Cart"
-              title="Remove Item From Cart"
-              onClick={onRemoveFromCart}
-            >
-              ❌
-            </button>
+      <div className="flex justify-between items-stretch container h-20">
+        <div className="flex items-start gap-4 w-2/3 item-in-cart">
+          <div className="relative w-1/2 sm:w-1/3 md:w-1/2 h-20 flex items-center">
+            {isLoading ? (
+              <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
+                <Skeleton
+                  borderRadius={0}
+                  height="100%"
+                  width="100%"
+                  containerClassName="w-20 h-20"
+                />
+              </SkeletonTheme>
+            ) : (
+              <div className="relative">
+                <img src={img} alt={item.name} className="h-20 w-20" />
+                <button
+                  className="absolute top-0 right-0 transform translate-x-[50%] translate-y-[-50%] text-xs bg-black text-white p-1 rounded-full"
+                  aria-label="Remove Item From Cart"
+                  title="Remove Item From Cart"
+                  onClick={onRemoveFromCart}
+                >
+                  ❌
+                </button>
+              </div>
+            )}
           </div>
           <div className="font-extrabold text-sm h-full">{item.name}</div>
         </div>
@@ -71,9 +89,9 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
             </div>
           </div>
           <div className="flex items-center justify-between w-full border border-black px-3 py-2">
-            <button onClick={onDecrement}>-</button>
+            <button onClick={onDecrement} className="font-semibold">-</button>
             <span className="text-sm font-extrabold">{item.qty}</span>
-            <button onClick={onIncrement}>+</button>
+            <button onClick={onIncrement} className="font-semibold">+</button>
           </div>
         </div>
       </div>

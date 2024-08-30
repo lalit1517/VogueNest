@@ -17,6 +17,7 @@ const Product = ({
   product,
   dispatch,
   REDUCER_ACTIONS,
+  inCart,
 }: PropsType): ReactElement => {
   const [isClicked, setIsClicked] = useState<boolean>(() => {
     const storedState = localStorage.getItem(`${product.sku}`);
@@ -24,7 +25,6 @@ const Product = ({
   });
 
   const [isLoading, setIsLoading] = useState(true);
-
   const [isZoomed, setIsZoomed] = useState(false);
 
   const handleZoomChange = useCallback(
@@ -51,70 +51,75 @@ const Product = ({
 
   const onRemoveFromCart = () => {
     dispatch({ type: REDUCER_ACTIONS.REMOVE, payload: { ...product, qty: 1 } });
-    setIsClicked(false);
+    if (!inCart) {
+      setIsClicked(false);
+    }
   };
 
   useEffect(() => {
-    localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
-  }, [isClicked, product.sku]);
+    if (!inCart) {
+      setIsClicked(false);
+    }
+    else {
+      setIsClicked(true);
+    }
+  }, [inCart]);
 
   return (
-    <>
-      <article className="product">
-        <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">
-          <div className="sm:h-16 md:h-20 lg:h-24 text-[#E53935] text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
-            <div>{product.name}</div>
-          </div>
-          {isLoading ? (
-            <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
-              <Skeleton
-                borderRadius={0}
-                height="100%"
-                width="100%"
-                containerClassName="w-full h-[340px] sm:h-[154] md:h-[210px] lg:h-[280px] xl:h-[388px]"
-              />
-            </SkeletonTheme>
-          ) : (
-            <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
-              <img src={img} alt={product.name} className="w-full" />
-            </ControlledZoom>
-          )}
+    <article className="product">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">
+        <div className="sm:h-16 md:h-20 lg:h-24 text-[#E53935] text-xl sm:text-sm md:text-xl italic w-full flex items-center justify-center font-bold">
+          <div>{product.name}</div>
         </div>
+        {isLoading ? (
+          <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
+            <Skeleton
+              borderRadius={0}
+              height="100%"
+              width="100%"
+              containerClassName="w-full h-[340px] sm:h-[154] md:h-[210px] lg:h-[280px] xl:h-[335px] 2xl:h-[388px]"
+            />
+          </SkeletonTheme>
+        ) : (
+          <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
+            <img src={img} alt={product.name} className="w-full" />
+          </ControlledZoom>
+        )}
+      </div>
 
-        <div className={`bottom ${isClicked ? "clicked" : ""}`}>
-          <div className="left">
-            <div className="details cursor-default text-white sm:text-base lg:text-xl flex items-center justify-center w-3/4">
-              <p>
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(product.price)}
-              </p>
-            </div>
-            <div
-              className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white"
-              onClick={onAddToCart}
-            >
-              <i className="fa-solid fa-cart-plus"></i>
-            </div>
+      <div className={`bottom ${isClicked ? "clicked" : ""}`}>
+        <div className="left">
+          <div className="details cursor-default text-white sm:text-base lg:text-xl flex items-center justify-center w-3/4">
+            <p>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(product.price)}
+            </p>
           </div>
-          <div className="right">
-            <div className="done cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center">
-              <i className="fa-solid fa-check"></i>
-            </div>
-            <div className="details cursor-default h-1/2 sm:text-base lg:text-xl flex text-center items-center justify-center w-3/4">
-              <p>Added to your cart</p>
-            </div>
-            <div
-              className="remove cursor-pointer sm:text-lg lg:text-2xl flex items-center justify-center w-1/4"
-              onClick={onRemoveFromCart}
-            >
-              <i className="fa-solid fa-xmark"></i>
-            </div>
+          <div
+            className="buy cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center text-white"
+            onClick={onAddToCart}
+          >
+            <i className="fa-solid fa-cart-plus"></i>
           </div>
         </div>
-      </article>
-    </>
+        <div className="right">
+          <div className="done cursor-pointer sm:text-lg lg:text-2xl w-1/4 flex items-center justify-center">
+            <i className="fa-solid fa-check"></i>
+          </div>
+          <div className="details cursor-default h-1/2 sm:text-base lg:text-xl flex text-center items-center justify-center w-3/4">
+            <p>Added to your cart</p>
+          </div>
+          <div
+            className="remove cursor-pointer sm:text-lg lg:text-2xl flex items-center justify-center w-1/4"
+            onClick={onRemoveFromCart}
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 };
 

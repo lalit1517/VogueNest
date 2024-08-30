@@ -66,6 +66,9 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
     }
   }, []);
 
+  const sanitizedPrice = totalPrice.replace('$', '');
+  const taxAmount = (Number(sanitizedPrice) * 0.18).toFixed(2);
+
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -211,7 +214,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
       />
       )}
       <div
-        className={`fixed w-full md:w-[30%] min-h-screen bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
+        className={`fixed w-full md:w-1/2 lg:w-2/5 xl:w-[30%] min-h-screen bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -232,7 +235,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
           {/* Middle Part - Scrollable Cart Items */}
           <div
             style={{ top: topHeight, bottom: bottomHeight }}
-            className="flex-grow overflow-y-auto py-6 absolute left-0 middle-part"
+            className="flex-grow overflow-y-auto py-6 w-full absolute left-0 middle-part"
           >
             <ul className="flex flex-col gap-6">
               {cart.map((item) => (
@@ -253,7 +256,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
             <div className="h-[1px] bg-black w-full"></div>
             <div className="container flex items-center justify-between py-4">
               <div className="text-sm">Taxes</div>
-              <div>$0.00</div>
+              <div><span className="custom-line-through">${taxAmount}</span><span className="ml-2">$0.00</span></div>
             </div>
             <div className="h-[1px] bg-black w-full"></div>
             <div className="container flex items-center justify-between py-4">

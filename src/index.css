@@ -463,3 +463,11 @@ header{
 .middle-part::-webkit-scrollbar {
   display: none;
 }
+
+@layer utilities {
+  .custom-line-through {
+    text-decoration: line-through;
+    text-decoration-color: #E53935; 
+    text-decoration-thickness: 2px;
+  }
+}
