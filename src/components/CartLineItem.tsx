@@ -52,8 +52,8 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
   const content = (
     <li className="list-none">
       <div className="flex justify-between items-stretch container h-20">
-        <div className="flex items-start gap-4 w-2/3 item-in-cart">
-          <div className="relative w-1/2 sm:w-1/3 md:w-1/2 h-20 flex items-center">
+        <div className="flex items-start gap-8 w-2/3 item-in-cart">
+          <div className="relative h-20 flex items-center">
             {isLoading ? (
               <SkeletonTheme baseColor="#D3D3D3" highlightColor="#E5E4E2">
                 <Skeleton
@@ -77,7 +77,7 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
               </div>
             )}
           </div>
-          <div className="font-extrabold text-sm h-full">{item.name}</div>
+          <div className="font-extrabold text-sm h-full w-1/3 md:w-1/2"><div>{item.name}</div></div>
         </div>
         <div className="flex flex-col justify-between items-end w-1/4 h-full itemprice-in-cart">
           <div className="text-base font-extrabold">
