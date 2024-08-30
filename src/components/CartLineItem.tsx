@@ -1,92 +1,104 @@
-import { ChangeEvent, ReactElement, memo } from "react"
-import { CartItemType } from "../context/CartProvider"
-import { ReducerAction } from "../context/CartProvider"
-import { ReducerActionType } from "../context/CartProvider"
+import { memo } from "react";
+import { CartItemType } from "../context/CartProvider";
+import { ReducerAction } from "../context/CartProvider";
+import { ReducerActionType } from "../context/CartProvider";
 
 type PropsType = {
-    item: CartItemType,
-    dispatch: React.Dispatch<ReducerAction>,
-    REDUCER_ACTIONS: ReducerActionType,
-}
+  item: CartItemType;
+  dispatch: React.Dispatch<ReducerAction>;
+  REDUCER_ACTIONS: ReducerActionType;
+};
 
 const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
+  const img: string = `https://cart-services-jntk.onrender.com/public/images/${item.sku}.jpeg`;
 
-    const img: string = `https://cart-services-jntk.onrender.com/public/images/${item.sku}.jpeg`;
+  const lineTotal: number = item.qty * item.price;
 
-    const lineTotal: number = (item.qty * item.price)
+  const onIncrement = () => {
+    dispatch({
+      type: REDUCER_ACTIONS.QUANTITY,
+      payload: { ...item, qty: item.qty + 1 },
+    });
+  };
 
-    const highestQty: number = 20 > item.qty ? 20 : item.qty
-
-    const optionValues: number[] = [...Array(highestQty).keys()].map(i => i + 1)
-
-    const options: ReactElement[] = optionValues.map(val => {
-        return <option key={`opt${val}`} value={val}>{val}</option>
-    })
-
-    const onChangeQty = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch({
-            type: REDUCER_ACTIONS.QUANTITY,
-            payload: { ...item, qty: Number(e.target.value) }
-        })
+  const onDecrement = () => {
+    if (item.qty > 1) {
+      dispatch({
+        type: REDUCER_ACTIONS.QUANTITY,
+        payload: { ...item, qty: item.qty - 1 },
+      });
     }
+  };
 
-    const onRemoveFromCart = () => {
+  const onRemoveFromCart = () => {
+    console.log(`Removing item with SKU: ${item.sku}`);
 
-        console.log(`Removing item with SKU: ${item.sku}`);
-    
-        dispatch({
-            type: REDUCER_ACTIONS.REMOVE,
-            payload: item,
-        });
-    
-        const localStorageKey = `${item.sku}`;
-        if (localStorage.getItem(localStorageKey)) {
-            localStorage.removeItem(localStorageKey);
-        }
-    };
+    dispatch({
+      type: REDUCER_ACTIONS.REMOVE,
+      payload: item,
+    });
 
-    const content = (
-        <li className="cart__item">
-            <img loading="lazy" src={img} alt={item.name} className="cart__img" />
-            <div aria-label="Item Name">{item.name}</div>
-            <div aria-label="Price Per Item">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)}</div>
+    const localStorageKey = `${item.sku}`;
+    if (localStorage.getItem(localStorageKey)) {
+      localStorage.removeItem(localStorageKey);
+    }
+  };
 
-            <label htmlFor="itemQty" className="offscreen">
-                Item Quantity
-            </label>
-            <select
-                name="itemQty"
-                id="itemQty"
-                className="cart__select"
-                value={item.qty}
-                aria-label="Item Quantity"
-                onChange={onChangeQty}
-            >{options}</select>
-
-            <div className="cart__item-subtotal" aria-label="Line Item Subtotal">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lineTotal)}
-            </div>
-
+  const content = (
+    <li className="list-none">
+      <div className="flex justify-between relative items-stretch container h-20">
+        <div className="flex items-start gap-6 w-2/3 item-in-cart">
+          <div className="relative w-1/2 h-20">
+            <img src={img} alt={item.name} className="h-20 w-20" />
             <button
-                className="cart__button"
-                aria-label="Remove Item From Cart"
-                title="Remove Item From Cart"
-                onClick={onRemoveFromCart}
+              className="absolute left-[83%] bottom-[83%] text-xs bg-black text-white p-1 rounded-full"
+              aria-label="Remove Item From Cart"
+              title="Remove Item From Cart"
+              onClick={onRemoveFromCart}
             >
-                ❌
+              ❌
             </button>
-        </li>
-    )
+          </div>
+          <div className="font-extrabold text-sm h-full">{item.name}</div>
+        </div>
+        <div className="flex flex-col justify-between items-end w-1/4 h-full itemprice-in-cart">
+          <div className="text-base font-extrabold">
+            <div>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(lineTotal)}
+            </div>
+          </div>
+          <div className="flex items-center justify-between w-full border border-black px-3 py-2">
+            <button onClick={onDecrement}>-</button>
+            <span className="text-sm font-extrabold">{item.qty}</span>
+            <button onClick={onIncrement}>+</button>
+          </div>
+        </div>
+      </div>
+      <div className="h-[1px] bg-black w-full mt-6"></div>
+    </li>
+  );
 
-    return content
+  return content;
+};
+
+function areItemsEqual(
+  { item: prevItem }: PropsType,
+  { item: nextItem }: PropsType
+) {
+  return Object.keys(prevItem).every((key) => {
+    return (
+      prevItem[key as keyof CartItemType] ===
+      nextItem[key as keyof CartItemType]
+    );
+  });
 }
 
-function areItemsEqual({ item: prevItem }: PropsType, { item: nextItem }: PropsType) {
-    return Object.keys(prevItem).every(key => {
-        return prevItem[key as keyof CartItemType] === nextItem[key as keyof CartItemType]
-    })
-}
+const MemoizedCartLineItem = memo<typeof CartLineItem>(
+  CartLineItem,
+  areItemsEqual
+);
 
-const MemoizedCartLineItem = memo<typeof CartLineItem>(CartLineItem, areItemsEqual)
-
-export default MemoizedCartLineItem
+export default MemoizedCartLineItem;

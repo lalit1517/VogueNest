@@ -7,6 +7,7 @@ import { WavyContainer } from "react-wavy-transitions";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
+
   return (
     <AuthProvider>
       <Router>

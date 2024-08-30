@@ -15,7 +15,6 @@ html {
 
 body {
   font-family: "Manrope";
-  background: #F2F2F2;
 }
 
 img {
@@ -433,4 +432,34 @@ header{
 
 #react-wavy-transitions__container{
   z-index: 10001;
+}
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #E53935;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to left, #E53935, rgba(246, 243, 255, 1));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to left, #E53935, rgba(246, 243, 255, 1))
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #E53935;
+}
+
+.middle-part::-webkit-scrollbar {
+  display: none;
 }

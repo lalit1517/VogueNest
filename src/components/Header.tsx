@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { WavyLink } from "react-wavy-transitions";
 import { useLocation } from "react-router-dom";
+import Cart from "./Cart";
 
 interface DecodedJwtPayload extends JwtPayload {
   name?: string;
@@ -22,6 +23,16 @@ const Header = () => {
   const [profilePic, setProfilePic] = useState(
     user && user.picture ? user.picture : defaultPic
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    console.log("Close button clicked"); // Debugging
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("google_jwt");
@@ -212,7 +223,7 @@ const Header = () => {
           <div
             className={`underline-hover font-bold transition-all duration-300 ${
               activeItem === "Home" ? "active text-[#E53935]" : "text-white"
-            }`}
+            } ${isModalOpen ? "text-white" : ""}`}
           >
             <WavyLink to="/" color="#E53935">
               Home
@@ -221,7 +232,7 @@ const Header = () => {
           <div
             className={`underline-hover font-bold transition-all duration-300 ${
               activeItem === "Products" ? "active text-[#E53935]" : "text-white"
-            }`}
+            } ${isModalOpen ? "text-white" : ""} `}
           >
             <WavyLink to="/products" color="#E53935">
               Products
@@ -229,17 +240,17 @@ const Header = () => {
           </div>
           <div
             className={`underline-hover font-bold transition-all duration-300 ${
-              activeItem === "Cart" ? "active text-[#E53935]" : "text-white"
+              isModalOpen ? "active text-[#E53935]" : "text-white"
             }`}
           >
-            <WavyLink to="/cart" color="#E53935">
+            <button onClick={openModal}>
               Cart
-            </WavyLink>
+            </button>
           </div>
           <div
             className={` underline-hover font-bold transition-all duration-300 ${
               activeItem === "Orders" ? "active text-[#E53935]" : "text-white"
-            }`}
+            } ${isModalOpen ? "text-white" : ""}`}
           >
             <WavyLink to="/orders" color="#E53935">
               Orders
@@ -428,9 +439,9 @@ const Header = () => {
                     document.body.classList.remove("noscroll");
                   }}
                 >
-                  <WavyLink to="/cart" color="#E53935">
+                  <button onClick={openModal}>
                     <div className="text-4xl">Cart</div>
-                  </WavyLink>
+                  </button>
                 </motion.div>
                 <motion.div
                   variants={buttonVariants}
@@ -478,6 +489,7 @@ const Header = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <Cart isOpen={isModalOpen} onClose={closeModal} />
     </header>
   );
 };

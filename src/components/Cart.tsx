@@ -1,8 +1,13 @@
 import useCart from "../hooks/useCart";
-import { useState } from "react";
+import {ReactElement, useState, useRef, useEffect } from "react";
 import CartLineItem from "./CartLineItem";
 import Modal from "./Modal";
 import { jwtDecode } from "jwt-decode";
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
 type OrderType = {
   userId: string;
@@ -34,7 +39,7 @@ interface DecodedJwtPayload {
   picture?: string;
 }
 
-const Cart = () => {
+const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [user, setUser] = useState<DecodedJwtPayload | null>(null);
   const [name, setName] = useState<string>("");
@@ -45,6 +50,21 @@ const Cart = () => {
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
   const { dispatch, REDUCER_ACTIONS, totalItems, totalPrice, cart } = useCart();
+
+  const [topHeight, setTopHeight] = useState(0);
+  const [bottomHeight, setBottomHeight] = useState(0);
+
+  const topPartRef = useRef<HTMLDivElement>(null);
+  const bottomPartRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (topPartRef.current) {
+      setTopHeight(topPartRef.current.offsetHeight);
+    }
+    if (bottomPartRef.current) {
+      setBottomHeight(bottomPartRef.current.offsetHeight);
+    }
+  }, []);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -181,28 +201,78 @@ const Cart = () => {
 
   const pageContent = (
     <>
-      <h2 className="offscreen">Cart</h2>
-      <ul className="cart">
-        {cart.map((item) => (
-          <CartLineItem
-            key={item.sku}
-            item={item}
-            dispatch={dispatch}
-            REDUCER_ACTIONS={REDUCER_ACTIONS}
-          />
-        ))}
-      </ul>
-      <div className="cart__totals">
-        <p>Total Items: {totalItems}</p>
-        <p>Total Price: {totalPrice}</p>
-        <button
-          className="cart__submit"
-          onClick={onPlaceOrderClick}
-          disabled={!totalItems}
-        >
-          Place Order
-        </button>
+      <>
+      {isOpen && (
+        <div
+        className={`fixed inset-0 bg-black z-[10000] duration-1000 transition-all ease-in-out ${
+          isOpen ? 'opacity-50' : 'opacity-0'
+        }`}
+        onClick={onClose}
+      />
+      )}
+      <div
+        className={`fixed w-full md:w-[30%] min-h-screen bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="container container-xl-custom w-full h-screen flex flex-col justify-between">
+          <div
+            ref={topPartRef}
+            className="w-full text-end top-part bg-[#f2f2f2]"
+          >
+            <button
+              onClick={onClose}
+              className="py-4 font-bold cursor-pointer text-end text-[2rem]"
+            >
+              CLOSE
+            </button>
+            <div className="h-[1px] bg-black w-full absolute left-0 z-50"></div>
+          </div>
+
+          {/* Middle Part - Scrollable Cart Items */}
+          <div
+            style={{ top: topHeight, bottom: bottomHeight }}
+            className="flex-grow overflow-y-auto py-6 absolute left-0 middle-part"
+          >
+            <ul className="flex flex-col gap-6">
+              {cart.map((item) => (
+                <CartLineItem
+                  key={item.sku}
+                  item={item}
+                  dispatch={dispatch}
+                  REDUCER_ACTIONS={REDUCER_ACTIONS}
+                />
+              ))}
+            </ul>
+          </div>
+
+          <div
+            ref={bottomPartRef}
+            className="w-full bg-[#f2f2f2] absolute left-0 bottom-0 flex-col items-center justify-between end-part"
+          >
+            <div className="h-[1px] bg-black w-full"></div>
+            <div className="container flex items-center justify-between py-4">
+              <div className="text-sm">Taxes</div>
+              <div>$0.00</div>
+            </div>
+            <div className="h-[1px] bg-black w-full"></div>
+            <div className="container flex items-center justify-between py-4">
+              <div className="text-sm">Shipping Charges</div>
+              <div>Free</div>
+            </div>
+            <div className="h-[1px] bg-black w-full"></div>
+            <div className="container flex items-center justify-between py-3 text-[1.5rem] font-extrabold">
+              <div className="">Total</div>
+              <div>{totalPrice}</div>
+            </div>
+            <div className="h-[1px] bg-black w-full"></div>
+            <button onClick={onPlaceOrderClick} disabled={!totalItems} className="py-4 w-full text-center font-extrabold text-[2rem] bg-black text-white">
+              CHECKOUT
+            </button>
+          </div>
+        </div>
       </div>
+    </>
     </>
   );
 
