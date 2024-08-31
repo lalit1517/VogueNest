@@ -12,6 +12,7 @@ type OrderType = {
     houseNo: string;
     street: string;
     city: string;
+    pinCode: string;
     state: string;
   };
   items: {
@@ -118,7 +119,7 @@ const Orders = () => {
                 <p><span className="font-semibold">Email:</span> {order.email}</p>
                 <p><span className="font-semibold">Phone:</span> {order.phone}</p>
                 <p>
-                  <span className="font-semibold">Address:</span> {order.address.houseNo}, {order.address.street}, {order.address.city}, {order.address.state}
+                  <span className="font-semibold">Address:</span> {order.address.houseNo}, {order.address.street}, {order.address.city}, {order.address.pinCode}, {order.address.state}
                 </p>
                 <p><span className="font-semibold">Total Price:</span> ${order.totalPrice}</p>
                 <p><span className="font-semibold">Date of Order:</span> {order.orderDate}</p>

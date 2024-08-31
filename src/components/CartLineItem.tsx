@@ -67,7 +67,7 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
               <div className="relative">
                 <img src={img} alt={item.name} className="h-20 w-24 sm:w-20" />
                 <button
-                  className="absolute top-0 right-0 transform translate-x-[50%] text-center translate-y-[-50%] text-[0.6rem] bg-black text-white p-1 rounded-full"
+                  className="absolute top-0 right-0 transform translate-x-[50%] text-center translate-y-[-50%] text-xs bg-black text-white p-1 rounded-full"
                   aria-label="Remove Item From Cart"
                   title="Remove Item From Cart"
                   onClick={onRemoveFromCart}

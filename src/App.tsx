@@ -14,7 +14,7 @@ function App() {
         <ScrollToTop />
         <WavyContainer />
         <Header />
-        <div className="pt-[97px]">
+        <div className="pt-[80px]">
           <Routers />
         </div>
         <Footer />

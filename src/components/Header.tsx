@@ -208,7 +208,7 @@ const Header = () => {
         show ? "active-menu" : ""
       } ${menuOpen ? "fixed w-full" : "header"}`}
     >
-      <div className="container container-xl-custom h-[97px] flex items-center py-6 justify-between md:justify-center">
+      <div className="container container-xl-custom h-[80px] flex items-center py-6 justify-between md:justify-center">
         {/* Logo Section */}
         <div className="w-1/3 flex items-center justify-start">
           <div>

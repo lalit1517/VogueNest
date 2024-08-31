@@ -180,7 +180,7 @@ const Footer = () => {
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
             <button
               onClick={() => setShowPopup(false)}
-              className="absolute top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-red-600 transition-colors duration-300"
+              className="absolute top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-[#E53935] transition-colors duration-300"
             >
               &times;
             </button>
