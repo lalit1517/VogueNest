@@ -46,12 +46,6 @@ img {
   flex-flow: column nowrap;
 }
 
-.nav {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5em;
-}
-
 .footer {
   flex-grow: 1;
   display: flex;
@@ -446,21 +440,6 @@ header{
 }
 
 ::-webkit-scrollbar {
-  width: 15px;
-  height: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: black;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #E53935;
-}
-
-.middle-part::-webkit-scrollbar {
   display: none;
 }
 
@@ -470,4 +449,18 @@ header{
     text-decoration-color: #E53935; 
     text-decoration-thickness: 2px;
   }
+}
+
+/* .header-link:hover{
+  color: #069092
+}
+
+header {
+  z-index: 10000;
+  background-color: black;
+  mix-blend-mode: difference;
+} */
+
+body {
+  background-color: #f2f2f2;
 }
