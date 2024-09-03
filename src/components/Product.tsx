@@ -19,10 +19,7 @@ const Product = ({
   REDUCER_ACTIONS,
   inCart,
 }: PropsType): ReactElement => {
-  const [isClicked, setIsClicked] = useState<boolean>(() => {
-    const storedState = localStorage.getItem(`${product.sku}`);
-    return storedState ? JSON.parse(storedState) : false;
-  });
+  const [isClicked, setIsClicked] = useState<boolean>();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -64,10 +61,6 @@ const Product = ({
       setIsClicked(true);
     }
   }, [inCart]);
-
-  useEffect(() => {
-    localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
-  }, [isClicked, product.sku]);
 
   return (
     <article className="product">

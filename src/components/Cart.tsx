@@ -163,7 +163,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
               itemName: item.name,
               quantity: item.qty,
               price: item.price,
-              totalPrice: item.price.toString(), // Each order's total price is the price of the individual item
+              totalPrice, 
               paymentId: response.razorpay_payment_id,
               paymentStatus: true,
               orderDate: formattedOrderDate,

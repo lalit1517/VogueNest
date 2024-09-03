@@ -39,6 +39,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -83,10 +84,13 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
     }
   }, []);
 
-  const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
-
   const handleViewMoreClick = (index: number) => {
     setExpandedOrderId(expandedOrderId === index ? null : index);
+  };
+
+  const handleClose = () => {
+    onClose();                
+    setExpandedOrderId(null);  
   };
 
   return (
@@ -96,7 +100,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
           className={`fixed inset-0 bg-black z-[10000] duration-1000 transition-all ease-in-out ${
             isOpen ? "opacity-50" : "opacity-0"
           }`}
-          onClick={onClose}
+          onClick={handleClose}
         />
       )}
       <div
@@ -110,7 +114,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
             className="w-full text-end top-part bg-[#f2f2f2]"
           >
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="py-4 font-bold cursor-pointer text-end text-[2rem]"
             >
               CLOSE
@@ -215,7 +219,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
                               <div>
                                 Total Amount <br />{" "}
                                 <span className="font-semibold">
-                                  ${order.totalPrice}
+                                  {order.totalPrice}
                                 </span>{" "}
                               </div>
                             </div>
