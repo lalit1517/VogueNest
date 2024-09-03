@@ -1,15 +1,15 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    const [topHeight, setTopHeight] = useState(0);
+  const [topHeight, setTopHeight] = useState(0);
   const [bottomHeight, setBottomHeight] = useState(0);
 
   const topPartRef = useRef<HTMLDivElement>(null);
@@ -24,9 +24,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     }
   }, []);
 
-    return (
-       <>
-       {isOpen && (
+  return (
+    <>
+      {isOpen && (
         <div
           className={`fixed inset-0 z-[10000] duration-1000 transition-all ease-in-out`}
           onClick={onClose}
@@ -64,7 +64,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
             className="w-full bg-[#f2f2f2] absolute left-0 bottom-0 flex-col items-center justify-between end-part"
           >
             <div className="h-[1px] bg-black w-full"></div>
-            <button form="userDetailsForm" type="submit"
+            <button
+              form="userDetailsForm"
+              type="submit"
               className="py-4 w-full text-center font-extrabold text-[2rem] bg-black text-white hover:bg-[#E53935] hover:text-black transition-all duration-300"
             >
               PROCEED TO PAY
@@ -73,7 +75,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         </div>
       </div>
     </>
-    );
+  );
 };
 
 export default Modal;

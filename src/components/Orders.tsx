@@ -1,9 +1,9 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import useCart from "../hooks/useCart";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,12 +22,10 @@ type OrderType = {
     pinCode: string;
     state: string;
   };
-  items: {
-    sku: string;
-    name: string;
-    quantity: number;
-    price: number;
-  }[];
+  sku: string;
+  itemName: string;
+  quantity: number;
+  price: number;
   totalPrice: string;
   paymentId: string;
   paymentStatus: boolean;
@@ -37,6 +35,7 @@ type OrderType = {
 
 const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
   const { user } = useAuth();
+  const { orderPlaced, resetOrderPlaced } = useCart();
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,203 +58,192 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
         setLoading(false);
       }
     } else {
-      setError("Login using the user icon to view the orders.");
+      setError("Please login by clicking on user icon to view your orders!");
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchOrders();
-  }, [user]);
+    resetOrderPlaced();
+  }, [user, orderPlaced]);
 
-  const sliderRef = useRef<Slider>(null);
+  const [topHeight, setTopHeight] = useState(0);
+  const [bottomHeight, setBottomHeight] = useState(0);
 
-  const handleNextClick = () => {
-    if (sliderRef.current) {
-      sliderRef.current.slickNext();
+  const topPartRef = useRef<HTMLDivElement>(null);
+  const bottomPartRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (topPartRef.current) {
+      setTopHeight(topPartRef.current.offsetHeight);
     }
-  };
-
-  const handlePrevClick = () => {
-    if (sliderRef.current) {
-      sliderRef.current.slickPrev();
+    if (bottomPartRef.current) {
+      setBottomHeight(bottomPartRef.current.offsetHeight);
     }
-  };
+  }, []);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    speed: 900,
-    ref: sliderRef,
+  const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
+
+  const handleViewMoreClick = (index: number) => {
+    setExpandedOrderId(expandedOrderId === index ? null : index);
   };
 
   return (
     <>
       {isOpen && (
         <div
-          className={`fixed inset-0 flex items-center transition-all duration-500 justify-center w-full bg-black bg-opacity-50 z-[11111] ${
-            isOpen ? "scale-x-100" : "scale-x-0"
+          className={`fixed inset-0 bg-black z-[10000] duration-1000 transition-all ease-in-out ${
+            isOpen ? "opacity-50" : "opacity-0"
           }`}
-        ><div>
-          <button
-            onClick={handlePrevClick}
-            className="absolute top-[45%] md:left-2 lg:left-4 xl:left-8"
+          onClick={onClose}
+        />
+      )}
+      <div
+        className={`fixed w-full md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-[30%] min-h-screen bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="container container-xl-custom w-full h-screen flex flex-col justify-between">
+          <div
+            ref={topPartRef}
+            className="w-full text-end top-part bg-[#f2f2f2]"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#f2f2f2"
-              className="bi bi-chevron-left w-16 h-16"
-              viewBox="0 0 16 16"
+            <button
+              onClick={onClose}
+              className="py-4 font-bold cursor-pointer text-end text-[2rem]"
             >
-              <path
-                fillRule="evenodd"
-                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={handleNextClick}
-            className="absolute top-[45%] md:right-2 lg:right-4 xl:right-8"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#f2f2f2"
-              className="bi bi-chevron-right w-16 h-16"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
-              />
-            </svg>
-          </button>
+              CLOSE
+            </button>
+            <div className="h-[1px] bg-black w-full absolute left-0 z-50"></div>
           </div>
-          <div className="overflow-hidden w-full md:w-5/6 h-[80%] md:h-[60%] xl:h-[85%] content-center">
+
+          {/* Middle Part - Scrollable Cart Items */}
+          <div
+            style={{ top: topHeight, bottom: bottomHeight }}
+            className="flex-grow overflow-y-auto py-6 w-full absolute left-0 middle-part"
+          >
             {loading ? (
-              <div className="w-full flex items-center justify-center">
+              <div className="w-full container flex items-center h-full justify-center">
                 <p className="loader"></p>
               </div>
             ) : error ? (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
-                  <button
-                    onClick={onClose}
-                    className="absolute  top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-[#E53935] transition-colors duration-300"
-                  >
-                    &times;
-                  </button>
-                  <h3 className="text-xl font-extrabold my-6">{error}</h3>
-                </div>
+              <div className="w-full h-full flex items-center justify-center container font-bold text-center text-[#E53935]">
+                <div>{error}</div>
               </div>
             ) : orders.length > 0 ? (
-              <Slider {...settings}>
+              <ul className="flex flex-col gap-6">
                 {orders.map((order, index) => (
-                  <li
-                    key={index}
-                    className="w-full md:h-[60vh] xl:h-[85vh] flex items-center place-content-center"
-                  >
-                    <div className="w-[97%] md:h-[55vh] xl:h-[80vh] bg-[#f2f2f2] rounded-lg shadow-lg mx-auto overflow-x-hidden overflow-y-auto">
-                      <div className="flex justify-between items-center gap-3 my-4 px-6">
-                        <div>
-                          <p className="text-lg font-semibold">
-                            Invoice No: #{index + 1}
-                          </p>
-                          <p className="text-sm">
-                            Placed on: {order.orderDate}
-                          </p>
+                  <li key={index} className="list-none">
+                    <div className="flex justify-between items-stretch container h-20">
+                      <div
+                        key={index}
+                        className="flex items-start gap-4 w-2/3 item-in-cart"
+                      >
+                        <div className="relative h-20 flex items-center">
+                          {loading ? (
+                            <SkeletonTheme
+                              baseColor="#D3D3D3"
+                              highlightColor="#E5E4E2"
+                            >
+                              <Skeleton
+                                borderRadius={0}
+                                height="100%"
+                                width="100%"
+                                containerClassName="w-20 h-20"
+                              />
+                            </SkeletonTheme>
+                          ) : (
+                            <div className="relative">
+                              <img
+                                src={`https://cart-services-jntk.onrender.com/public/images/${order.sku}.jpeg`}
+                                alt={order.itemName}
+                                className="h-20 w-24 sm:w-20"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="font-extrabold text-sm h-full w-2/3 sm:w-1/3 md:w-1/2">
+                          <div>{order.itemName}</div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-between items-end w-1/4 h-full itemprice-in-cart">
+                        <div className="text-base font-extrabold">
+                          <div>Invoice {index + 1}</div>
                         </div>
                         <button
-                          onClick={onClose}
-                          className="text-white hover:bg-[#E53935] hover:text-black transition-all duration-300 font-extrabold text-[1.5rem] border bg-black px-6 py-2"
+                          onClick={() => handleViewMoreClick(index)}
+                          className=" bg-black text-center text-white w-full border text-sm border-black px-2 py-2 hover:bg-[#E53935] transition-all duration-300"
                         >
-                          CLOSE
+                          {expandedOrderId === index ? "Hide..." : "View..."}
                         </button>
                       </div>
-                      <div className="flex items-center justify-center my-4 overflow-hidden">
-                        <div className="w-full bg-[#E53935] h-[1px] opacity-50"></div>
-                      </div>
-
-                      <div className="w-full px-6 my-4">
-                        <ul className="overflow-hidden w-full flex flex-col border border-black rounded-xl">
-                          <div className="flex flex-col gap-4">
-                            {order.items.map((item, idx) => (
-                              <li
-                                key={idx}
-                                className="flex items-center justify-between w-full overflow-hidden"
-                              >
-                                <div className="flex flex-col gap-4 items-center justify-between w-2/3 p-6">
-                                  <span className="font-extrabold text-[1.5rem] text-center">
-                                    {item.name}
-                                  </span>
-                                  <span className="text-lg font-semibold">
-                                    {item.quantity} x ${item.price}
-                                  </span>
-                                </div>
-                                <div className="w-1/3">
-                                  <img
-                                    src={`https://cart-services-jntk.onrender.com/public/images/${item.sku}.jpeg`}
-                                    alt={item.name}
-                                  />
-                                </div>
-                              </li>
-                            ))}
-                          </div>
-                          <div className="w-full h-[1px] bg-black"></div>
-                          <div className="p-6">
-                            <div className="font-extrabold text-[1.5rem] mb-4">
-                              Order Details
-                            </div>
-                            <div className="space-y-3 flex flex-col justify-between">
-                              <div className="flex flex-col gap-1">
-                                <span className="font-semibold">
-                                  Shipping Address
-                                </span>
-                                <div>
-                                  {order.name}, {order.address.houseNo},{" "}
-                                  {order.address.street}, {order.address.city},{" "}
-                                  {order.address.pinCode}, {order.address.state}
-                                </div>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <span className="font-semibold">
-                                  Total Price
-                                </span>
-                                <div>{order.totalPrice}</div>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <span className="font-semibold">
-                                  Expected Arrival
-                                </span>
-                                <div>{order.expectedArrivalDate}</div>
-                              </div>
-                            </div>
-                          </div>
-                        </ul>
-                      </div>
                     </div>
+                    {expandedOrderId === index && (
+                      <div className="transition-all duration-700 w-full ease-in-out bg-[#D3D3D3] mt-4">
+                        <div className="flex justify-between items-stretch container py-4">
+                          <div className="flex flex-col items-start justify-between gap-4 w-3/5">
+                            <div className="font-extrabold text-sm flex flex-col items-start gap-[0.5px]">
+                              <div>Shipping Address</div>
+                              <div className="font-semibold text-sm ">
+                                {order.name}, {order.address.houseNo},<br />
+                                {order.address.street}, {order.address.city}{" "}
+                                {order.address.pinCode}, <br />
+                                {order.address.state}
+                              </div>
+                            </div>
+                            <div className="font-bold text-sm">
+                              <div>
+                                Placed on: <br />{" "}
+                                <span className="font-semibold">
+                                  {order.orderDate}
+                                </span>{" "}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col justify-between items-start gap-4 w-1/4 itemprice-in-cart">
+                            <div className="font-bold text-sm">
+                              <div>
+                                Qty x Price <br />{" "}
+                                <span className="font-semibold">
+                                  {order.quantity} x {order.price}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="font-bold text-sm">
+                              <div>
+                                Total Amount <br />{" "}
+                                <span className="font-semibold">
+                                  ${order.totalPrice}
+                                </span>{" "}
+                              </div>
+                            </div>
+                            <div className="font-bold text-sm">
+                              <div>
+                                Arrival By: <br />{" "}
+                                <span className="font-semibold">
+                                  {order.expectedArrivalDate}
+                                </span>{" "}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="h-[1px] bg-black w-full mt-6"></div>
                   </li>
                 ))}
-              </Slider>
+              </ul>
             ) : (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
-                  <button
-                    onClick={onClose}
-                    className="absolute  top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-[#E53935] transition-colors duration-300"
-                  >
-                    &times;
-                  </button>
-                  <h3 className="text-xl font-extrabold my-6">
-                    No orders found.
-                  </h3>
-                </div>
+              <div className="w-full h-full flex items-center justify-center container font-bold text-center text-[#E53935]">
+                <div>No orders found!</div>
               </div>
             )}
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

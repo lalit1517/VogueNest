@@ -21,12 +21,10 @@ type OrderType = {
     pinCode: string;
     state: string;
   };
-  items: {
-    sku: string;
-    name: string;
-    quantity: number;
-    price: number;
-  }[];
+  sku: string;
+  itemName: string;
+  quantity: number;
+  price: number;
   totalPrice: string;
   paymentId: string;
   paymentStatus: boolean;
@@ -53,6 +51,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
   const [state, setState] = useState<string>("");
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const { dispatch, REDUCER_ACTIONS, totalItems, totalPrice, cart } = useCart();
+  const { placeOrder } = useCart();
 
   const [topHeight, setTopHeight] = useState(0);
   const [bottomHeight, setBottomHeight] = useState(0);
@@ -147,51 +146,53 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
       image: "https://vogue-nest.vercel.app/logo.svg",
       handler: async function (response: any) {
         try {
-          const orderData: OrderType = {
-            userId: userId || "",
-            name,
-            email,
-            phone,
-            address: {
-              houseNo,
-              street,
-              city,
-              pinCode,
-              state,
-            },
-            items: cart.map((item) => ({
+          for (const item of cart) {
+            const orderData: OrderType = {
+              userId: userId || "",
+              name,
+              email,
+              phone,
+              address: {
+                houseNo,
+                street,
+                city,
+                pinCode,
+                state,
+              },
               sku: item.sku,
-              name: item.name,
+              itemName: item.name,
               quantity: item.qty,
               price: item.price,
-            })),
-            totalPrice,
-            paymentId: response.razorpay_payment_id,
-            paymentStatus: true,
-            orderDate: formattedOrderDate,
-            expectedArrivalDate: formattedExpectedArrivalDate,
-          };
+              totalPrice: item.price.toString(), // Each order's total price is the price of the individual item
+              paymentId: response.razorpay_payment_id,
+              paymentStatus: true,
+              orderDate: formattedOrderDate,
+              expectedArrivalDate: formattedExpectedArrivalDate,
+            };
 
-          const res = await fetch(
-            "https://cart-services-jntk.onrender.com/api/order",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(orderData),
+            const res = await fetch(
+              "https://cart-services-jntk.onrender.com/api/order",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+              }
+            );
+
+            if (!res.ok) {
+              alert("Failed to save order for item: " + item.name);
+              return; // Exit the loop if any order fails
             }
-          );
-
-          if (res.ok) {
-            console.log("Payment Successful");
-            dispatch({ type: REDUCER_ACTIONS.SUBMIT });
-            setShowPopup(true);
-          } else {
-            alert("Failed to save order");
           }
+
+          console.log("All payments successful");
+          placeOrder();
+          dispatch({ type: REDUCER_ACTIONS.SUBMIT });
+          setShowPopup(true);
         } catch (error) {
-          console.log("Error occurred while saving order");
+          console.log("Error occurred while saving order:", error);
         }
       },
       prefill: {
@@ -203,7 +204,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
         address: `${houseNo}, ${street}, ${city}, ${pinCode}, ${state}`,
       },
       theme: {
-        color: "#F37254",
+        color: "#E53935",
       },
     };
 
@@ -281,11 +282,13 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
               <div className="">Total</div>
               <div>{totalPrice}</div>
             </div>
-            <div className="h-[1px] bg-black w-full"></div>
+            <div className="h-[1px] bg-black w-full cur"></div>
             <button
               onClick={onPlaceOrderClick}
               disabled={!totalItems}
-              className="py-4 w-full hover:bg-[#E53935] hover:text-black transition-all duration-300 text-center font-extrabold text-[2rem] bg-black text-white"
+              className={`py-4 w-full hover:bg-[#E53935] hover:text-black transition-all duration-300 text-center font-extrabold text-[2rem] bg-black text-white ${
+                !totalItems ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               CHECKOUT
             </button>
@@ -300,8 +303,8 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
       {pageContent}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         {!user ? (
-          <div className="w-full container font-bold text-center text-[#E53935]">
-            Please click on user icon to login before placing your order !
+          <div className="w-full h-full flex items-center justify-center container font-bold text-center text-[#E53935]">
+            <div>Please click on user icon to login before placing your order !</div>
           </div>
         ) : (
           <div className="container w-full">
@@ -352,46 +355,46 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
               <label className="w-full flex flex-col items-start gap-1 justify-between ">
                 <div className="text-sm font-medium">Address*</div>
                 <div className="w-full flex flex-col items-start justify-between gap-3">
-                <input
-                  type="text"
-                  value={houseNo}
-                  onChange={(e) => setHouseNo(e.target.value)}
-                  required
-                  placeholder="Address line 1"
-                  className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
-                />
-                <input
-                  type="text"
-                  value={street}
-                  onChange={(e) => setStreet(e.target.value)}
-                  required
-                  placeholder="Address line 2"
-                  className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
-                />
-                <input
-                  type="text"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  required
-                  placeholder="City"
-                  className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
-                />
-                <input
-                  type="text"
-                  value={pinCode}
-                  onChange={(e) => setPinCode(e.target.value)}
-                  required
-                  placeholder="Pin Code"
-                  className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
-                />
-                <input
-                  type="text"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  required
-                  placeholder="State"
-                  className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
-                />
+                  <input
+                    type="text"
+                    value={houseNo}
+                    onChange={(e) => setHouseNo(e.target.value)}
+                    required
+                    placeholder="Address line 1"
+                    className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
+                  />
+                  <input
+                    type="text"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                    required
+                    placeholder="Address line 2"
+                    className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
+                  />
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required
+                    placeholder="City"
+                    className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
+                  />
+                  <input
+                    type="text"
+                    value={pinCode}
+                    onChange={(e) => setPinCode(e.target.value)}
+                    required
+                    placeholder="Pin Code"
+                    className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
+                  />
+                  <input
+                    type="text"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    required
+                    placeholder="State"
+                    className="py-4 bg-transparent border border-transparent border-b-black w-full focus:outline-none focus:placeholder-transparent font-semibold"
+                  />
                 </div>
               </label>
             </form>
