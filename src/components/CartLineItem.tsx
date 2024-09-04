@@ -47,6 +47,11 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
       type: REDUCER_ACTIONS.REMOVE,
       payload: item,
     });
+
+    const localStorageKey = `${item.sku}`;
+    if (localStorage.getItem(localStorageKey)) {
+      localStorage.removeItem(localStorageKey);
+    }
   };
 
   const content = (
@@ -77,7 +82,9 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
               </div>
             )}
           </div>
-          <div className="font-extrabold text-sm h-full w-2/3 sm:w-1/3 md:w-1/2"><div>{item.name}</div></div>
+          <div className="font-extrabold text-sm h-full w-2/3 sm:w-1/3 md:w-1/2">
+            <div>{item.name}</div>
+          </div>
         </div>
         <div className="flex flex-col justify-between items-end w-1/4 h-full itemprice-in-cart">
           <div className="text-base font-extrabold">
@@ -89,9 +96,13 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
             </div>
           </div>
           <div className="flex items-center justify-between w-full border border-black px-3 py-2">
-            <button onClick={onDecrement} className="font-semibold">-</button>
+            <button onClick={onDecrement} className="font-semibold">
+              -
+            </button>
             <span className="text-sm font-extrabold">{item.qty}</span>
-            <button onClick={onIncrement} className="font-semibold">+</button>
+            <button onClick={onIncrement} className="font-semibold">
+              +
+            </button>
           </div>
         </div>
       </div>

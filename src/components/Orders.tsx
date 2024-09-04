@@ -217,7 +217,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
                             </div>
                             <div className="font-bold text-sm">
                               <div>
-                                Total Amount <br />{" "}
+                                Total Bill <br />{" "}
                                 <span className="font-semibold">
                                   {order.totalPrice}
                                 </span>{" "}
