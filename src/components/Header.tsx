@@ -497,21 +497,22 @@ const Header = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
+    document.body.classList.add("noscroll-phone");
   };
 
   const closeModal = () => {
-    console.log("Close button clicked"); // Debugging
     setIsModalOpen(false);
+    document.body.classList.remove("noscroll-phone");
   };
 
   const openOrderModal = () => {
-    console.log("Open button clicked");
     setIsOrderModalOpen(true);
+    document.body.classList.add("noscroll-phone");
   };
 
   const closeOrderModal = () => {
-    console.log("Close button clicked"); // Debugging
     setIsOrderModalOpen(false);
+    document.body.classList.remove("noscroll-phone");
   };
 
   useEffect(() => {
