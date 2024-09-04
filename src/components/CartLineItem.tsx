@@ -47,6 +47,12 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
       type: REDUCER_ACTIONS.REMOVE,
       payload: item,
     });
+
+    // const localStorageKey = `${item.sku}`;
+    // if (localStorage.getItem(localStorageKey)) {
+    //   localStorage.removeItem(localStorageKey);
+    // }
+
   };
 
   const content = (

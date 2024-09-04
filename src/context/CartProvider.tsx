@@ -163,7 +163,7 @@ const initCartContextState: UseCartContextType = {
   totalItems: 0,
   totalPrice: "",
   cart: [],
-  orderPlaced: false, // Default to false
+  orderPlaced: false, 
   placeOrder: () => {},
   resetOrderPlaced: () => {},
 };

@@ -304,7 +304,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         {!user ? (
           <div className="w-full h-full flex items-center justify-center container font-bold text-center text-[#E53935]">
-            <div>Please click on user icon to login before placing your order !</div>
+            <div>Please login through the menu before placing your order !</div>
           </div>
         ) : (
           <div className="container w-full">

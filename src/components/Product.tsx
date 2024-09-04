@@ -62,6 +62,10 @@ const Product = ({
     }
   }, [inCart]);
 
+  // useEffect(() => {
+  //   localStorage.setItem(`${product.sku}`, JSON.stringify(isClicked));
+  // }, [isClicked, product.sku]);
+
   return (
     <article className="product">
       <div className="flex flex-col gap-3 sm:gap-4 lg:gap-0 items-center justify-between">

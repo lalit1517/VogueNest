@@ -758,13 +758,13 @@ const Header = () => {
             {dropdownOpen && (
               <div
                 ref={dropdownRef}
-                className="absolute right-2 mt-3 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+                className="absolute right-2 mt-[22px] bg-white border border-gray-300 rounded-md shadow-lg z-10"
               >
                 <div className="flex flex-col p-2 overflow-hidden">
                   {user ? (
                     <>
                       <button
-                        className="px-8 py-2 text-gray-800 border text-sm hover:text-[#E53935] hover:bg-black transition-all duration-300 font-bold border-gray-800 rounded-full"
+                        className="px-8 py-2 text-gray-800 border text-sm hover:text-white hover:bg-black transition-all duration-300 font-bold border-gray-800 rounded-full"
                         onClick={handleLogout}
                       >
                         Logout
