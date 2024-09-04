@@ -6,7 +6,7 @@
 
 html, body {
   scroll-behavior: smooth;
-  height: 100lvh;
+  height: 100%;
   font-family: "Manrope";
 }
 
