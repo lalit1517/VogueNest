@@ -37,7 +37,10 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="container container-xl-custom w-full h-screen flex flex-col justify-between">
+        <div
+          className="container container-xl-custom w-full h-screen flex flex-col justify-between touch-pan-y"
+          style={{ touchAction: 'pan-y' }}
+        >
           <div
             ref={topPartRef}
             className="w-full text-end top-part bg-[#f2f2f2]"
