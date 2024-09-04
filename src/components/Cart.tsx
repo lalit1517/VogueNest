@@ -314,10 +314,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
             <form
               id="userDetailsForm"
               className="flex flex-col items-center justify-between gap-10 xl:gap-12 w-full py-10"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmitForm();
-              }}
+              onSubmit={handleSubmitForm}
             >
               <label className="w-full flex flex-col h-20 items-start justify-between ">
                 <div className="text-sm font-medium">Name*</div>
