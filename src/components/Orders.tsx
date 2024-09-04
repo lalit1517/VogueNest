@@ -211,7 +211,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
                               <div>
                                 Qty x Price <br />{" "}
                                 <span className="font-semibold">
-                                  {order.quantity} x {order.price}
+                                  {order.quantity} x ${order.price}
                                 </span>
                               </div>
                             </div>
