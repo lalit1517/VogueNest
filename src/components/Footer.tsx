@@ -87,7 +87,7 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col gap-2 text-gray-400 items-center md:items-start text-center md:text-start font-medium">
                   <div>
-                    <WavyLink to="/products" color="#E53935">
+                    <WavyLink to="/shop" color="#E53935">
                       <div className="underline-hover w-fit text-sm md:text-lg">
                         Products
                       </div>

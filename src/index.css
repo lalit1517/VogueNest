@@ -457,15 +457,14 @@ header{
   }
 }
 
-/* .header-link:hover{
+.header-link:hover{
   color: #069092
 }
 
 header {
   z-index: 10000;
   background-color: black;
-  mix-blend-mode: difference;
-} */
+}
 
 body {
   background-color: #f2f2f2;
@@ -524,4 +523,3 @@ body {
     transform: rotate(-360deg);
   }
 }
-    

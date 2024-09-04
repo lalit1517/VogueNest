@@ -2,6 +2,7 @@ import useCart from "../hooks/useCart";
 import useProducts from "../hooks/useProducts";
 import { ReactElement, useState } from "react";
 import Product from "./Product";
+import Footer from "./Footer";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 const ProductList = () => {
@@ -81,7 +82,7 @@ const ProductList = () => {
 
   const content = (
     <>
-      <div className="search-bar container w-full flex items-end justify-end mt-16 md:mt-24">
+      <div className="search-bar container w-full flex items-end justify-end mt-36">
         <div className="relative w-full md:w-2/5 lg:w-1/3 xl:w-[30%] 2xl:w-1/4 flex items-center">
           <input
             type="text"
@@ -98,9 +99,10 @@ const ProductList = () => {
           />
         </div>
       </div>
-      <main className="main main--products container container-xl-custom py-12">
+      <main className="main main--products container container-xl-custom pt-12 pb-20">
         {pageContent}
       </main>
+      <Footer />
     </>
   );
 
