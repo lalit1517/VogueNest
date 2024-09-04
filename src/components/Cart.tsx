@@ -223,11 +223,11 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
         />
       )}
       <div
-        className={`fixed w-full md:w-1/2 lg:w-2/5 xl:w-[30%] min-h-screen bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
+        className={`fixed w-full md:w-1/2 lg:w-2/5 xl:w-[30%] max-h-dvh bg-[#f2f2f2] top-0 right-0 z-[11000] transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="container container-xl-custom w-full h-screen flex flex-col justify-between">
+        <div className="container container-xl-custom w-full max-h-dvh flex flex-col justify-between">
           <div
             ref={topPartRef}
             className="w-full text-end top-part bg-[#f2f2f2]"
