@@ -812,7 +812,7 @@ const Header = () => {
                   y="15.5742"
                   width="55"
                   height="4"
-                  fill={menuOpen ? "#E53935" : "white"}
+                  fill={menuOpen ? "#E53935" : "#E53935"}
                   className="transition-all duration-500"
                   transform="rotate(45 36 6)"
                 />
@@ -821,7 +821,7 @@ const Header = () => {
                   y="0.0742188"
                   width="55"
                   height="4"
-                  fill={menuOpen ? "#E53935" : "white"}
+                  fill={menuOpen ? "#E53935" : "#E53935"}
                   className="transition-all duration-500"
                   transform="rotate(-45 32 6)"
                 />
@@ -839,7 +839,7 @@ const Header = () => {
                   y="15.5742"
                   width="55"
                   height="4"
-                  fill={menuOpen ? "#E53935" : "white"}
+                  fill={menuOpen ? "#E53935" : "#E53935"}
                   className="transition-all duration-500"
                 />
                 <rect
@@ -847,7 +847,7 @@ const Header = () => {
                   y="0.0742188"
                   width="55"
                   height="4"
-                  fill={menuOpen ? "#E53935" : "white"}
+                  fill={menuOpen ? "#E53935" : "#E53935"}
                   className="transition-all duration-500"
                 />
               </svg>
