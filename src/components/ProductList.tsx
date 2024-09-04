@@ -136,7 +136,7 @@ const ProductList = () => {
           <div>
             <div className="newsletter w-full py-28">
               <div className="container container-xl-custom flex items-center py-10 justify-center">
-                <div className="flex flex-col items-center w-3/4 md:w-2/3 xl:w-1/2">
+                <div className="flex flex-col items-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
                   <h2 className="text-4xl md:text-5xl font-bold mb-10 leading-snug mix-blend-difference text-white text-center">
                     SUBSCRIBE TO OUR NEWSLETTER
                   </h2>

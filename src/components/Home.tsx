@@ -24,8 +24,7 @@ const Home = () => {
       <meta name="description" content="At VogueNest, we bring you the latest fashion trends along with quality home essentials. Shop stylish clothing, wooden tables, kitchen appliances, and more." />
         <meta name="keywords" content="VogueNest, fashion, online shopping, clothing, accessories, men's fashion, women's fashion, trendy clothes, stylish accessories, fashion store, home decor" />
       </Helmet>
-      
-      <main className="home-main bg-[url('/bg-home.png')] bg-cover bg-center bg-fixed">
+      <main className="home-main">
         <section>
           <div className="container flex flex-col h-screen items-center justify-center text-white">
             <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference pt-[80px] md:pt-[64px]">
@@ -64,7 +63,7 @@ const Home = () => {
           <div>
             <div className="newsletter w-full py-28">
               <div className="container container-xl-custom flex items-center py-10 justify-center">
-                <div className="flex flex-col items-center w-3/4 md:w-2/3 xl:w-1/2">
+                <div className="flex flex-col items-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
                   <h2 className="text-4xl md:text-5xl font-bold mb-10 leading-snug mix-blend-difference text-white text-center">
                     SUBSCRIBE TO OUR NEWSLETTER
                   </h2>
