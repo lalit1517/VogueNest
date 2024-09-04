@@ -25,6 +25,7 @@ const Home = () => {
         <meta name="keywords" content="VogueNest, fashion, online shopping, clothing, accessories, men's fashion, women's fashion, trendy clothes, stylish accessories, fashion store, home decor" />
       </Helmet>
       <main className="home-main">
+        <div className="bg-[url('/bg-home.png')] bg-cover bg-center bg-fixed">
         <section>
           <div className="container flex flex-col h-screen items-center justify-center text-white">
             <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference pt-[80px] md:pt-[64px]">
@@ -229,6 +230,7 @@ const Home = () => {
             </div>
           </div>
         )}
+        </div>
       </main>
     </>
   );
