@@ -6,6 +6,9 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  margin: 0;
+  font-family: "Manrope";
 }
 
 .offscreen {
@@ -14,7 +17,6 @@ html {
 }
 
 body {
-  font-family: "Manrope";
   background-image: url("/bg-home.png");
   background-size: cover;
   background-position: center;
