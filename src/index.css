@@ -9,15 +9,13 @@
   left: -10000px;
 }
 
-html, body {
+body {
   scroll-behavior: smooth;
   font-family: "Manrope";
-  background-image: -webkit-image-set(url('/bg-home.png'));
-  background-repeat: no-repeat;
+  background-image: url('/bg-home.png');
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-attachment: fixed;
-  height: 100svh;
 }
 
 img {
@@ -27,6 +25,8 @@ img {
 }
 
 #root {
+  /* React root div */
+  min-height: 100vh;
   display: flex;
   flex-flow: column nowrap;
 }
