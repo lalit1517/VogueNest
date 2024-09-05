@@ -4,26 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
 .offscreen {
   position: absolute;
   left: -10000px;
 }
 
-body {
-  font-family: "Manrope";
-}
-
 html, body {
+  scroll-behavior: smooth;
+  font-family: "Manrope";
   background-image: url('/bg-home.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
-  height: 100svh;
 }
 
 img {
@@ -33,6 +26,8 @@ img {
 }
 
 #root {
+  /* React root div */
+  min-height: 100lvh;
   display: flex;
   flex-flow: column nowrap;
 }
