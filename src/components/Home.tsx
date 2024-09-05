@@ -27,9 +27,9 @@ const Home = () => {
               <img src="/home.png" alt="" />
             </div>
             <div className="w-full flex items-end justify-end">
-              <div className="flex flex-col w-full md:w-1/2 items-start gap-8 mb-10 justify-between text-[#E53935]">
-                <div className="font-extrabold text-[3rem]">OUR COLLECTION</div>
-                <div className="font-semibold text-[1.5rem]">
+              <div className="flex flex-col w-full md:w-1/2 2xl:w-2/5 items-start gap-8 mb-10 justify-between text-[#E53935]">
+                <div className="font-extrabold text-[2.3rem] md:text-[3rem]">OUR COLLECTION</div>
+                <div className="font-semibold text-[1.2rem] md:text-[1.4rem] text-justify">
                   Our collection features timeless pieces designed for the
                   modern individual. Quality over quantity is our mantra.
                   Discover a wardrobe that reflects your essence.

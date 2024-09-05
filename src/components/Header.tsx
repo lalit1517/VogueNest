@@ -325,34 +325,24 @@ const Header = () => {
                   </motion.div>
                   <motion.div
                     variants={buttonVariants}
-                    className={`${
-                      activeItem === "Cart"
-                        ? "active text-[#E53935] text-4xl"
-                        : "text-white text-4xl"
-                    }`}
                     onClick={() => {
                       setMenuOpen(false);
                       document.body.classList.remove("noscroll");
                     }}
                   >
                     <button onClick={openModal}>
-                      <div className="text-4xl">Cart</div>
+                      <div className="text-4xl text-white hover:text-[#E53935]">Cart</div>
                     </button>
                   </motion.div>
                   <motion.div
                     variants={buttonVariants}
-                    className={`${
-                      activeItem === "Orders"
-                        ? "active text-[#E53935] text-4xl"
-                        : "text-white text-4xl"
-                    }`}
                     onClick={() => {
                       setMenuOpen(false);
                       document.body.classList.remove("noscroll");
                     }}
                   >
                     <button onClick={openOrderModal}>
-                      <div className="text-4xl">Orders</div>
+                      <div className="text-4xl text-white hover:text-[#E53935]">Orders</div>
                     </button>
                   </motion.div>
 
@@ -364,7 +354,7 @@ const Header = () => {
                     }}
                   >
                     <button onClick={toggleDropdown}>
-                      <div className="text-4xl text-white">{user ? "Logout" : "Login"}</div>
+                      <div className="text-4xl text-white hover:text-[#E53935]">{user ? "Logout" : "Login"}</div>
                     </button>
                   </motion.div>
                 </nav>
