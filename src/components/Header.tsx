@@ -290,7 +290,7 @@ const Header = () => {
                   menuOpen ? "fixed md:hidden w-full" : "hidden"
                 }`}
               >
-                <nav className="flex min-h-screen pt-40 flex-col items-center space-y-6">
+                <nav className="flex min-h-screen pt-44 flex-col items-center space-y-8">
                   <motion.div
                     variants={buttonVariants}
                     className={`${
