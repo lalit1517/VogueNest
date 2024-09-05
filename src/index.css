@@ -23,7 +23,7 @@ html, body {
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
-  height: -webkit-fill-available;
+  height: 100lvh;
 }
 
 img {
@@ -34,7 +34,7 @@ img {
 
 #root {
   /* React root div */
-  min-height: 100vh;
+  min-height: 100lvh;
   display: flex;
   flex-flow: column nowrap;
 }
