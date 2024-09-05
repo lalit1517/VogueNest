@@ -19,7 +19,7 @@ const Home = () => {
         <div className="background-body"></div>
         <div>
           <section>
-            <div className="container flex flex-col h-[calc(100vh+80px)] md:h-[calc(100vh+64px)] items-center justify-center text-white">
+            <div className="container flex flex-col h-[calc(100svh+80px)] md:h-[calc(100svh+64px)] items-center justify-center text-white">
               <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference">
                 VOGUENEST
               </div>
