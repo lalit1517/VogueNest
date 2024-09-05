@@ -287,7 +287,7 @@ const Header = () => {
             >
               <div
                 className={`bg-black ${
-                  menuOpen ? "fixed md:hidden h-[calc(100vh-104px)] w-full flex flex-col items-center justify-center" : "hidden"
+                  menuOpen ? "fixed md:hidden h-[calc(100dvh-104px)] w-full flex flex-col items-center justify-center" : "hidden"
                 }`}
               >
                 <nav className="flex flex-col items-center space-y-8">
