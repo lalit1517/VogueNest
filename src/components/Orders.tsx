@@ -59,7 +59,7 @@ const Orders = ({ isOpen, onClose }: ModalProps): ReactElement => {
         setLoading(false);
       }
     } else {
-      setError("Please login through the menu to view your orders!");
+      setError("Please login to view your orders!");
       setLoading(false);
     }
   };

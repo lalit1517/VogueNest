@@ -15,7 +15,7 @@ body {
   
 }
 
-.bg-home{
+.background-body{
   background-image: url('/bg-home.png');
   background-size: cover;
   background-position: center;

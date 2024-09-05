@@ -94,30 +94,33 @@ const ProductList = () => {
         />
       </Helmet>
 
-      <div>
-        <div className="search-bar container w-full flex items-end justify-end mt-36">
-          <div className="relative w-full md:w-2/5 lg:w-1/3 xl:w-[30%] 2xl:w-1/4 flex items-center">
-            <input
-              type="text"
-              placeholder="Search by product name"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2 pl-10 border border-black focus:outline-none rounded"
-            />
-            <i
-              className={`absolute right-1 text-gray-500 cursor-pointer bg-white px-3 py-2 ${
-                searchTerm
-                  ? "fa-solid fa-xmark"
-                  : "fa-solid fa-magnifying-glass"
-              }`}
-              onClick={searchTerm ? handleClearSearch : undefined}
-            />
+      <main>
+        <div className="background-body"></div>
+        <div>
+          <div className="search-bar container w-full flex items-end justify-end mt-36">
+            <div className="relative w-full md:w-2/5 lg:w-1/3 xl:w-[30%] 2xl:w-1/4 flex items-center">
+              <input
+                type="text"
+                placeholder="Search by product name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-2 pl-10 border border-black focus:outline-none rounded"
+              />
+              <i
+                className={`absolute right-1 text-gray-500 cursor-pointer bg-white px-3 py-2 ${
+                  searchTerm
+                    ? "fa-solid fa-xmark"
+                    : "fa-solid fa-magnifying-glass"
+                }`}
+                onClick={searchTerm ? handleClearSearch : undefined}
+              />
+            </div>
           </div>
+          <main className="main main--products container container-xl-custom pt-10 pb-20">
+            {pageContent}
+          </main>
         </div>
-        <main className="main main--products container container-xl-custom pt-10 pb-20">
-          {pageContent}
-        </main>
-      </div>
+      </main>
     </>
   );
 
