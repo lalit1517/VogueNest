@@ -25,7 +25,7 @@ const Home = () => {
         <meta name="keywords" content="VogueNest, fashion, online shopping, clothing, accessories, men's fashion, women's fashion, trendy clothes, stylish accessories, fashion store, home decor" />
       </Helmet>
       <main className="home-main">
-        <div className="bg-[url('/bg-home.png')] bg-cover bg-center bg-fixed">
+        <div className="bg-[url('/bg-home.png')] bg-cover bg-center bg-fixed h-full">
         <section>
           <div className="container flex flex-col h-screen items-center justify-center text-white">
             <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference pt-[80px] md:pt-[64px]">
@@ -49,12 +49,13 @@ const Home = () => {
                   Discover a wardrobe that reflects your essence.
                 </div>
                 <div className="mt-4">
-                  <a
-                    href="/shop"
+                <WavyLink to="/shop" color="#E53935">
+                  <div
                     className=" hover:bg-black font-semibold text-sm text-white px-2 py-2 bg-[#E53935] transition-all duration-300"
                   >
                     SHOP NOW
-                  </a>
+                  </div>
+                  </WavyLink>
                 </div>
               </div>
             </div>
