@@ -304,7 +304,7 @@ const Header = () => {
                     }}
                   >
                     <WavyLink to="/" color="#E53935">
-                      <div className="text-4xl">Home</div>
+                      <div className="text-4xl hover:text-[#E53935]">Home</div>
                     </WavyLink>
                   </motion.div>
                   <motion.div
@@ -320,7 +320,7 @@ const Header = () => {
                     }}
                   >
                     <WavyLink to="/shop" color="#E53935">
-                      <div className="text-4xl">Shop</div>
+                      <div className="text-4xl hover:text-[#E53935]">Shop</div>
                     </WavyLink>
                   </motion.div>
                   <motion.div
