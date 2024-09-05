@@ -14,12 +14,21 @@ html, body {
   flex-flow: column nowrap;
   scroll-behavior: smooth;
   font-family: "Manrope";
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('/bg-home.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  height: 100svh;
-  height: -webkit-fill-available;
+  z-index: -1; /* Ensure it stays behind content */
 }
 
 img {
