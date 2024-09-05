@@ -27,7 +27,7 @@ const Home = () => {
       <main className="home-main">
         <div className="">
         <section>
-          <div className="container flex flex-col h-screen items-center justify-center text-white">
+          <div className="container flex flex-col h-svh items-center justify-center text-white">
             <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference pt-[80px] md:pt-[64px]">
               VOGUENEST
             </div>
