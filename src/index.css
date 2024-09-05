@@ -26,7 +26,7 @@ html, body {
   flex-flow: column nowrap;
   scroll-behavior: smooth;
   font-family: "Manrope";
-  height: 100lvh;
+  height: 100svh;
   overflow-x: hidden;
 }
 
