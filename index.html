@@ -9,5 +9,14 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      // JavaScript for parallax background effect
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        const bg = document.body;
+  
+        bg.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+      });
+    </script>
   </body>
 </html>
