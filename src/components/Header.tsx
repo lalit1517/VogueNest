@@ -287,10 +287,10 @@ const Header = () => {
             >
               <div
                 className={`bg-black ${
-                  menuOpen ? "fixed md:hidden w-full" : "hidden"
+                  menuOpen ? "fixed md:hidden h-[calc(100vh-104px)] w-full flex flex-col items-center justify-center" : "hidden"
                 }`}
               >
-                <nav className="flex min-h-screen pt-44 flex-col items-center space-y-8">
+                <nav className="flex flex-col items-center space-y-8">
                   <motion.div
                     variants={buttonVariants}
                     className={`${
