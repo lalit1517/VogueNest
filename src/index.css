@@ -12,11 +12,12 @@
 html, body {
   scroll-behavior: smooth;
   font-family: "Manrope";
-  background-image: url('/bg-home.png');
+  background-image: -webkit-image-set(url('/bg-home.png'));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
+  height: 100svh;
 }
 
 img {
@@ -26,8 +27,6 @@ img {
 }
 
 #root {
-  /* React root div */
-  min-height: 100lvh;
   display: flex;
   flex-flow: column nowrap;
 }

@@ -163,7 +163,7 @@ const Footer = () => {
                 <div className="bg-gray-200 h-[0.01rem]" />
               </div>
               <div className="w-full py-6 md:flex text-xs md:text-sm font-medium items-center text-white justify-center">
-                <div className="text-center md:text-start mb-2 md:mb-0 ">
+                <div className="text-center md:text-start mb-0">
                   ©️ {year} VogueNest
                 </div>
               </div>
