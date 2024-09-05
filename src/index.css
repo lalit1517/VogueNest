@@ -9,7 +9,7 @@
   left: -10000px;
 }
 
-body {
+html, body {
   scroll-behavior: smooth;
   font-family: "Manrope";
   background-image: url('/bg-home.png');

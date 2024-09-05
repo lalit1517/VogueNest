@@ -290,7 +290,7 @@ const Header = () => {
                   menuOpen ? "fixed md:hidden w-full" : "hidden"
                 }`}
               >
-                <nav className="flex min-h-screen pt-48 flex-col items-center space-y-6">
+                <nav className="flex min-h-screen pt-40 flex-col items-center space-y-6">
                   <motion.div
                     variants={buttonVariants}
                     className={`${
@@ -356,30 +356,17 @@ const Header = () => {
                     </button>
                   </motion.div>
 
-                  <div
-                    className={`flex items-center justify-center w-full bottom-44 absolute`}
+                  <motion.div
+                    variants={buttonVariants}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      document.body.classList.remove("noscroll");
+                    }}
                   >
-                    {user ? (
-                      <motion.button
-                        variants={buttonVariants}
-                        className="text-white text-lg underline"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </motion.button>
-                    ) : (
-                      <motion.button variants={buttonVariants}>
-                        <GoogleLogin
-                          onSuccess={handleLoginSuccess}
-                          onError={() => {
-                            console.log("Login Failed");
-                          }}
-                          shape="circle"
-                          width={80}
-                        />
-                      </motion.button>
-                    )}
-                  </div>
+                    <button onClick={toggleDropdown}>
+                      <div className="text-4xl text-white">{user ? "Logout" : "Login"}</div>
+                    </button>
+                  </motion.div>
                 </nav>
               </div>
             </motion.div>
