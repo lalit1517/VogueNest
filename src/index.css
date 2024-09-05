@@ -9,57 +9,32 @@
   left: -10000px;
 }
 
-/* html, body {
-  display: flex;
-  flex-flow: column nowrap;
+body {
   scroll-behavior: smooth;
   font-family: "Manrope";
-  background-image: url('/bg-home.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
-} */
- 
-/* html, body {
-  display: flex;
-  flex-flow: column nowrap;
-  scroll-behavior: smooth;
-  font-family: "Manrope";
-  height: 100vh;
-  overflow-x: hidden;
+  
 }
 
-body::before {
-  content: "";
+.bg-home{
+  background-image: url('/bg-home.png');
+  background-size: cover;
+  background-position: center;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/bg-home.png');
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-} */
-
-html, body {
-  display: flex;
-  flex-flow: column nowrap;
-  scroll-behavior: smooth;
-  font-family: "Manrope";
   height: 100vh;
-  overflow-x: hidden;
-  background-image: url('/bg-home.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  width: 100vw;
+  z-index: -1;
 }
 
 img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .main {

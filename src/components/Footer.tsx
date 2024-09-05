@@ -19,7 +19,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="bg-transparent">
+      <footer>
         <div>
           <div className="newsletter w-full py-28">
             <div className="container container-xl-custom flex items-center py-10 justify-center">

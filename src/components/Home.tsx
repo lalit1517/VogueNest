@@ -15,8 +15,9 @@ const Home = () => {
           content="VogueNest, fashion, online shopping, clothing, accessories, men's fashion, women's fashion, trendy clothes, stylish accessories, fashion store, home decor"
         />
       </Helmet>
-      <main className="home-main">
-        <div>
+      <main className="home-main ">
+        <div className="bg-home"></div>
+        <div className="">
           <section>
             <div className="container flex flex-col h-[calc(100dvh+80px)] md:h-[calc(100dvh+64px)] items-center justify-center text-white">
               <div className="text-[3.2rem] md:text-[5rem] text-center font-bold mix-blend-difference">
