@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { WavyLink } from "react-wavy-transitions";
 import { useLocation } from "react-router-dom";
+import useCart from "../hooks/useCart";
 import Cart from "./Cart";
 import Orders from "./Orders";
 
@@ -22,6 +23,7 @@ const Header = () => {
   const profilePicRef = useRef<HTMLImageElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const { totalItems } = useCart();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -287,7 +289,9 @@ const Header = () => {
             >
               <div
                 className={`bg-black ${
-                  menuOpen ? "fixed md:hidden h-[calc(100dvh-80px)] w-full flex flex-col items-center justify-center" : "hidden"
+                  menuOpen
+                    ? "fixed md:hidden h-[calc(100dvh-80px)] w-full flex flex-col items-center justify-center"
+                    : "hidden"
                 }`}
               >
                 <nav className="flex flex-col items-center space-y-8">
@@ -330,8 +334,15 @@ const Header = () => {
                       document.body.classList.remove("noscroll");
                     }}
                   >
-                    <button onClick={openModal}>
-                      <div className="text-4xl text-white hover:text-[#E53935]">Cart</div>
+                    <button className="relative" onClick={openModal}>
+                      <div className="text-4xl relative text-white hover:text-[#E53935]">
+                        Cart
+                      </div>
+                      {totalItems > 0 && (
+                        <button className="absolute top-0 right-0 transform translate-x-[120%] text-center translate-y-[-0%] text-xs bg-[#E53935] text-white px-[5px] rounded-full">
+                          {totalItems}
+                        </button>
+                      )}
                     </button>
                   </motion.div>
                   <motion.div
@@ -342,7 +353,9 @@ const Header = () => {
                     }}
                   >
                     <button onClick={openOrderModal}>
-                      <div className="text-4xl text-white hover:text-[#E53935]">Orders</div>
+                      <div className="text-4xl text-white hover:text-[#E53935]">
+                        Orders
+                      </div>
                     </button>
                   </motion.div>
 
@@ -354,7 +367,9 @@ const Header = () => {
                     }}
                   >
                     <button onClick={toggleDropdown}>
-                      <div className="text-4xl text-white hover:text-[#E53935]">{user ? "Logout" : "Login"}</div>
+                      <div className="text-4xl text-white hover:text-[#E53935]">
+                        {user ? "Logout" : "Login"}
+                      </div>
                     </button>
                   </motion.div>
                 </nav>
@@ -380,8 +395,15 @@ const Header = () => {
               <div className="text-[2rem]">SHOP</div>
             </WavyLink>
           </div>
-          <div className="header-link">
-            <button onClick={openModal}>CART</button>
+          <div className="relative header-link">
+            <button className="relative" onClick={openModal}>
+              CART
+            </button>
+            {totalItems > 0 && (
+              <button className="absolute top-0 right-0 transform translate-x-[120%] text-center translate-y-[-0%] text-xs bg-[#E53935] text-white px-[5px] rounded-full">
+                {totalItems}
+              </button>
+            )}
           </div>
           <div className="header-link">
             <button onClick={openOrderModal}>ORDERS</button>

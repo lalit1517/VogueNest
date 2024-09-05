@@ -66,7 +66,7 @@ const Footer = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col text-center md:text-start gap-2 text-white mix-blend-difference text-sm md:text-lg font-medium">
+                <div className="flex flex-col text-center md:text-start gap-2 text-white md:text-black text-sm md:text-lg font-medium">
                   <div>
                     VogueNest: Where fashion meets sophistication. Explore our
                     curated collections and find your next style statement. Shop
@@ -77,7 +77,7 @@ const Footer = () => {
               <div className="flex flex-col items-center md:items-start gap-8 mb-12 md:mb-0">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
-                    <div className="text-lg md:text-xl font-semibold text-white mix-blend-difference">
+                    <div className="text-lg md:text-xl font-semibold text-white md:text-black">
                       QUICK LINKS
                     </div>
                   </div>
@@ -85,24 +85,24 @@ const Footer = () => {
                     <div className="w-[60px] bg-[#E53935] h-1"></div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 text-white items-center md:items-start text-center md:text-start font-medium">
+                <div className="flex flex-col gap-2 text-white md:text-black items-center md:items-start text-center md:text-start font-medium">
                   <div>
                     <WavyLink to="/shop" color="#E53935">
-                      <div className="underline-hover w-fit text-sm md:text-lg mix-blend-difference">
+                      <div className="underline-hover w-fit text-sm md:text-lg">
                         Products
                       </div>
                     </WavyLink>
                   </div>
                   <div>
                     <WavyLink to="/cart" color="#E53935">
-                      <div className="underline-hover w-fit text-sm md:text-lg mix-blend-difference">
+                      <div className="underline-hover w-fit text-sm md:text-lg">
                         Cart
                       </div>
                     </WavyLink>
                   </div>
                   <div>
                     <WavyLink to="/orders" color="#E53935">
-                      <div className="underline-hover w-fit text-sm md:text-lg mix-blend-difference">
+                      <div className="underline-hover w-fit text-sm md:text-lg">
                         Orders
                       </div>
                     </WavyLink>
@@ -112,7 +112,7 @@ const Footer = () => {
               <div className="flex flex-col items-center md:items-start gap-8">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
-                    <div className="text-lg md:text-xl font-semibold text-white mix-blend-difference">
+                    <div className="text-lg md:text-xl font-semibold text-white md:text-black">
                       FOLLOW US
                     </div>
                   </div>
@@ -120,38 +120,38 @@ const Footer = () => {
                     <div className="w-[60px] bg-[#E53935] h-1"></div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 text-white text-sm md:text-lg  font-medium">
+                <div className="flex flex-col gap-2 text-white md:text-black text-sm md:text-lg  font-medium">
                   <ul className="flex gap-10 justify-between">
                     <li>
-                      <WavyLink color="#E53935" className="text-white" to="">
-                        <i className="text-[0.8rem] mix-blend-difference md:text-[1rem] fa-brands fa-facebook-f opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                      <WavyLink color="#E53935" className="text-white md:text-black" to="">
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-facebook-f opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
                       </WavyLink>
                     </li>
                     <li className="flex items-center justify-center">
                       <WavyLink
                         color="#E53935"
-                        className="text-white text-[0.8rem] md:text-[1rem]"
+                        className="text-white md:text-black text-[0.8rem] md:text-[1rem]"
                         to=""
                       >
-                        <i className="text-[0.8rem] mix-blend-difference md:text-[1rem] fa-brands fa-x-twitter opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-x-twitter opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
                       </WavyLink>
                     </li>
                     <li>
                       <WavyLink
                         color="#E53935"
-                        className="text-white text-[0.8rem] md:text-[1rem]"
+                        className="text-white md:text-black text-[0.8rem] md:text-[1rem]"
                         to=""
                       >
-                        <i className="text-[0.8rem] mix-blend-difference md:text-[1rem] fa-brands fa-instagram opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-instagram opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
                       </WavyLink>
                     </li>
                     <li>
                       <WavyLink
                         color="#E53935"
-                        className="text-white text-[0.8rem] md:text-[1rem]"
+                        className="text-white md:text-black text-[0.8rem] md:text-[1rem]"
                         to=""
                       >
-                        <i className="text-[0.8rem] md:text-[1rem] mix-blend-difference fa-brands fa-linkedin-in opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
+                        <i className="text-[0.8rem] md:text-[1rem] fa-brands fa-linkedin-in opacity-75 hover:scale-150 hover:opacity-100 transition-all"></i>
                       </WavyLink>
                     </li>
                   </ul>
