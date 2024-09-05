@@ -17,6 +17,14 @@ body {
   font-family: "Manrope";
 }
 
+body {
+  background-image: url('/bg-home.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100lvh;
+}
+
 img {
   display: block;
   width: 100%;
