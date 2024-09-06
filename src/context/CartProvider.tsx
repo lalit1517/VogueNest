@@ -6,6 +6,7 @@ import {
   ReactElement,
   useState,
 } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export type CartItemType = {
   sku: string;
@@ -38,54 +39,43 @@ const reducer = (
 ): CartStateType => {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.ADD: {
-      if (!action.payload) {
+      if (!action.payload)
         throw new Error("action.payload missing in ADD action");
-      }
 
       const { sku, name, price } = action.payload;
 
       const filteredCart: CartItemType[] = state.cart.filter(
         (item) => item.sku !== sku
       );
-
       const itemExists: CartItemType | undefined = state.cart.find(
         (item) => item.sku === sku
       );
-
       const qty: number = itemExists ? itemExists.qty + 1 : 1;
 
       return { ...state, cart: [...filteredCart, { sku, name, price, qty }] };
     }
     case REDUCER_ACTION_TYPE.REMOVE: {
-      if (!action.payload) {
+      if (!action.payload)
         throw new Error("action.payload missing in REMOVE action");
-      }
-
       const { sku } = action.payload;
 
       const filteredCart: CartItemType[] = state.cart.filter(
         (item) => item.sku !== sku
       );
-
-      return { ...state, cart: [...filteredCart] };
+      return { ...state, cart: filteredCart };
     }
     case REDUCER_ACTION_TYPE.QUANTITY: {
-      if (!action.payload) {
+      if (!action.payload)
         throw new Error("action.payload missing in QUANTITY action");
-      }
-
       const { sku, qty } = action.payload;
 
       const itemExists: CartItemType | undefined = state.cart.find(
         (item) => item.sku === sku
       );
-
-      if (!itemExists) {
+      if (!itemExists)
         throw new Error("Item must exist in order to update quantity");
-      }
 
       const updatedItem: CartItemType = { ...itemExists, qty };
-
       const filteredCart: CartItemType[] = state.cart.filter(
         (item) => item.sku !== sku
       );
@@ -100,15 +90,61 @@ const reducer = (
   }
 };
 
+const fetchCartFromBackend = async (userId: string) => {
+  try {
+    const response = await fetch(`https://cart-services-jntk.onrender.com/api/cart/${userId}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data.cart;
+    } else {
+      throw new Error("Failed to fetch cart");
+    }
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const updateCartInBackend = async (userId: string, cart: CartItemType[]) => {
+  try {
+    const response = await fetch(`https://cart-services-jntk.onrender.com/api/cart/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart }),
+    });
+    if (!response.ok) throw new Error("Failed to update cart");
+  } catch (error) {
+    console.error("Error updating cart:", error);
+  }
+};
+
 const useCartContext = (initCartState: CartStateType) => {
   const [state, dispatch] = useReducer(reducer, initCartState, (initial) => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? { cart: JSON.parse(savedCart) } : initial;
   });
+  const { user } = useAuth();
+  const userId = user?.sub || localStorage.getItem("userId");
+
+  useEffect(() => {
+    if (userId) {
+      (async () => {
+        const cartFromBackend = await fetchCartFromBackend(userId);
+        cartFromBackend.forEach((item: CartItemType) => {
+          dispatch({ type: REDUCER_ACTION_TYPE.ADD, payload: item });
+        });
+      })();
+    }
+  }, [userId]);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
-  }, [state.cart]);
+    if (userId) {
+      updateCartInBackend(userId, state.cart);
+    }
+  }, [state.cart, userId]);
 
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
 
@@ -116,17 +152,20 @@ const useCartContext = (initCartState: CartStateType) => {
     return REDUCER_ACTION_TYPE;
   }, []);
 
-  const totalItems = state.cart.reduce((previousValue, cartItem) => {
-    return previousValue + cartItem.qty;
-  }, 0);
+  const totalItems = state.cart.reduce(
+    (previousValue, cartItem) => previousValue + cartItem.qty,
+    0
+  );
 
   const totalPrice = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   }).format(
-    state.cart.reduce((previousValue, cartItem) => {
-      return previousValue + cartItem.qty * cartItem.price;
-    }, 0)
+    state.cart.reduce(
+      (previousValue, cartItem) =>
+        previousValue + cartItem.qty * cartItem.price,
+      0
+    )
   );
 
   const cart = state.cart.sort((a, b) => {
@@ -135,13 +174,8 @@ const useCartContext = (initCartState: CartStateType) => {
     return itemA - itemB;
   });
 
-  const placeOrder = () => {
-    setOrderPlaced(true);
-  };
-
-  const resetOrderPlaced = () => {
-    setOrderPlaced(false);
-  };
+  const placeOrder = () => setOrderPlaced(true);
+  const resetOrderPlaced = () => setOrderPlaced(false);
 
   return {
     dispatch,
@@ -163,7 +197,7 @@ const initCartContextState: UseCartContextType = {
   totalItems: 0,
   totalPrice: "",
   cart: [],
-  orderPlaced: false, 
+  orderPlaced: false,
   placeOrder: () => {},
   resetOrderPlaced: () => {},
 };

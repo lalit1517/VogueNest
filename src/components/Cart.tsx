@@ -171,7 +171,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
             };
 
             const res = await fetch(
-              "https://cart-services-jntk.onrender.com/api/order",
+              "https://cart-services-jntk.on/shop.com/api/order",
               {
                 method: "POST",
                 headers: {

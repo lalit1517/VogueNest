@@ -97,7 +97,7 @@ const ProductList = () => {
       <main>
         <div className="background-body"></div>
         <div>
-          <div className="search-bar container w-full flex items-end justify-end mt-36">
+          <div className="search-bar container w-full flex items-end justify-end mt-28 md:mt-36">
             <div className="relative w-full md:w-2/5 lg:w-1/3 xl:w-[30%] 2xl:w-1/4 flex items-center">
               <input
                 type="text"
