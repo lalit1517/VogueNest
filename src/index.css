@@ -455,6 +455,7 @@ header{
 
 .header-link {
   transition: color 300ms ease;
+  opacity: 0;
 }
 
 .header-link:hover {
@@ -513,4 +514,9 @@ header{
   100% {
     transform: rotate(-360deg);
   }
+}
+
+
+.main-title, .sub-title {
+  opacity: 0;
 }

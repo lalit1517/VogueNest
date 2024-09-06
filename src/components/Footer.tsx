@@ -1,8 +1,13 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { WavyLink } from "react-wavy-transitions";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
+
   const [email, setEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
@@ -17,18 +22,58 @@ const Footer = () => {
 
   const year = new Date().getFullYear();
 
+  useEffect(() => {
+
+    const words = document.querySelectorAll(".newsletter-main-title");
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".newsletter",
+        start: "top 70%",
+      },
+    });
+
+    tl.fromTo(
+      words,
+      { y: 200, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }
+    );
+
+    tl.fromTo(
+      ".newsletter-content1",
+      { y: 200, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 3 }, 0.2
+    ); 
+
+    tl.fromTo(
+      ".newsletter-content2",
+      { y: 200, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 3 }, 0.4
+    );
+
+  }, [])
+
+  const splitSentenceIntoWords = (sentence: string) => {
+    return sentence.split(" ").map((word, index) => (
+      <React.Fragment key={index}>
+        <span className="inline-block newsletter-main-title">{word}</span>
+        {index < sentence.split(" ").length - 1 && <span>&nbsp;</span>}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <>
       <footer>
         <div>
-          <div className="newsletter w-full py-28">
-            <div className="container container-xl-custom flex items-center py-10 justify-center">
+          <div className="w-full py-28">
+            <div className="newsletter container container-xl-custom flex items-center py-10 justify-center">
               <div className="flex flex-col items-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
-                <h2 className="text-4xl md:text-5xl font-bold mb-10 leading-snug mix-blend-difference text-white text-center">
-                  SUBSCRIBE TO OUR NEWSLETTER
+                <h2 className="text-4xl overflow-hidden md:text-5xl font-bold mb-10 leading-snug mix-blend-difference text-white text-center">
+                {splitSentenceIntoWords("SUBSCRIBE TO OUR NEWSLETTER")}
                 </h2>
                 <form
-                  className="w-full"
+                  className="w-full overflow-hidden"
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleSubscribe();
@@ -37,14 +82,14 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder="Email"
-                    className="px-6 py-4 border border-gray-300 mb-6 w-full"
+                    className="px-6 py-4 border newsletter-content1 overflow-hidden border-gray-300 mb-6 w-full"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                   <button
                     type="submit"
-                    className="px-6 py-4 w-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-300"
+                    className="px-6 py-4 newsletter-content2 overflow-hidden w-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-300"
                   >
                     Subscribe
                   </button>

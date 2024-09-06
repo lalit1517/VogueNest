@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { WavyLink } from "react-wavy-transitions";
 import { useLocation } from "react-router-dom";
+import { gsap } from "gsap";
 import useCart from "../hooks/useCart";
 import Cart from "./Cart";
 import Orders from "./Orders";
@@ -199,6 +200,20 @@ const Header = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    gsap.fromTo(
+      ".header-link",
+      { y: 70, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 2,
+        stagger: 0.2,
+        ease: "power2.out",
+      }
+    );
+  }, [])
+
   return (
     <>
       <header
@@ -384,7 +399,7 @@ const Header = () => {
           show ? "active-menu" : ""
         }`}
       >
-        <div className="container py-2 flex w-full items-center justify-between text-white text-[1.8rem] font-extrabold">
+        <div className="container py-2 flex w-full overflow-hidden items-center justify-between text-white text-[1.8rem] font-extrabold">
           <div className="header-link">
             <WavyLink to="/" color="#E53935">
               <div className="text-[2rem] ">HOME</div>
