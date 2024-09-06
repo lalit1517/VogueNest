@@ -221,7 +221,7 @@ const Header = () => {
           show ? "active-menu" : ""
         } ${menuOpen ? "fixed w-full" : "header"}`}
       >
-        <div className="container container-xl-custom h-[80px] flex items-center py-6 justify-between md:justify-center">
+        <div className="container overflow-hidden container-xl-custom h-[60px] flex items-center py-2 justify-between md:justify-center">
           <div className="w-1/3 flex items-center justify-start">
             <div>
               <WavyLink to="/" color="#E53935">
@@ -305,7 +305,7 @@ const Header = () => {
               <div
                 className={`bg-black ${
                   menuOpen
-                    ? "fixed md:hidden h-[calc(100dvh-80px)] w-full flex flex-col items-center justify-center"
+                    ? "fixed md:hidden h-[calc(100dvh-60px)] w-full flex flex-col items-center justify-center"
                     : "hidden"
                 }`}
               >
@@ -399,7 +399,7 @@ const Header = () => {
           show ? "active-menu" : ""
         }`}
       >
-        <div className="container py-2 flex w-full overflow-hidden items-center justify-between text-white text-[1.8rem] font-extrabold">
+        <div className="container py-1 flex w-full overflow-hidden items-center justify-between text-white text-[1.8rem] font-extrabold">
           <div className="header-link">
             <WavyLink to="/" color="#E53935">
               <div className="text-[2rem] ">HOME</div>
@@ -415,7 +415,7 @@ const Header = () => {
               CART
             </button>
             {totalItems > 0 && (
-              <button className="absolute top-0 right-0 transform translate-x-[120%] text-center translate-y-[-0%] text-xs bg-[#E53935] text-white px-[5px] rounded-full">
+              <button className="absolute top-0 right-0 transform translate-x-[120%] text-center translate-y-[20%] text-xs bg-[#E53935] text-white px-[5px] rounded-full">
                 {totalItems}
               </button>
             )}

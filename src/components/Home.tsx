@@ -108,7 +108,7 @@ const Home = () => {
         <div className="background-body"></div>
         <div>
           <section>
-            <div className="container home-page flex flex-col h-[calc(100svh+80px)] md:h-[calc(100svh+64px)] items-center justify-center text-white">
+            <div className="container home-page flex flex-col h-[calc(100svh+60px)] md:h-[calc(100svh+56px)] items-center justify-center text-white">
               <div className="text-[3.2rem] md:text-[5rem] overflow-hidden text-center font-bold mix-blend-difference">
                 {splitSentenceIntoWords("VOGUENEST")}
               </div>
