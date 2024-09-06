@@ -23,6 +23,7 @@ const REDUCER_ACTION_TYPE = {
   ADD: "ADD",
   REMOVE: "REMOVE",
   QUANTITY: "QUANTITY",
+  SET: "SET",  // New action for setting cart
   SUBMIT: "SUBMIT",
 };
 
@@ -30,7 +31,7 @@ export type ReducerActionType = typeof REDUCER_ACTION_TYPE;
 
 export type ReducerAction = {
   type: string;
-  payload?: CartItemType;
+  payload?: CartItemType | CartItemType[]; // Handle both single items and arrays for SET action
 };
 
 const reducer = (
@@ -39,7 +40,7 @@ const reducer = (
 ): CartStateType => {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.ADD: {
-      if (!action.payload)
+      if (!action.payload || !('sku' in action.payload))
         throw new Error("action.payload missing in ADD action");
 
       const { sku, name, price } = action.payload;
@@ -55,8 +56,9 @@ const reducer = (
       return { ...state, cart: [...filteredCart, { sku, name, price, qty }] };
     }
     case REDUCER_ACTION_TYPE.REMOVE: {
-      if (!action.payload)
+      if (!action.payload || !('sku' in action.payload))
         throw new Error("action.payload missing in REMOVE action");
+
       const { sku } = action.payload;
 
       const filteredCart: CartItemType[] = state.cart.filter(
@@ -65,8 +67,9 @@ const reducer = (
       return { ...state, cart: filteredCart };
     }
     case REDUCER_ACTION_TYPE.QUANTITY: {
-      if (!action.payload)
+      if (!action.payload || !('sku' in action.payload))
         throw new Error("action.payload missing in QUANTITY action");
+
       const { sku, qty } = action.payload;
 
       const itemExists: CartItemType | undefined = state.cart.find(
@@ -81,6 +84,13 @@ const reducer = (
       );
 
       return { ...state, cart: [...filteredCart, updatedItem] };
+    }
+    case REDUCER_ACTION_TYPE.SET: {
+      if (!Array.isArray(action.payload)) {
+        throw new Error("action.payload must be an array for SET action");
+      }
+
+      return { ...state, cart: action.payload };
     }
     case REDUCER_ACTION_TYPE.SUBMIT: {
       return { ...state, cart: [] };
@@ -121,20 +131,22 @@ const updateCartInBackend = async (userId: string, cart: CartItemType[]) => {
 };
 
 const useCartContext = (initCartState: CartStateType) => {
-  const [state, dispatch] = useReducer(reducer, initCartState, (initial) => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? { cart: JSON.parse(savedCart) } : initial;
-  });
   const { user } = useAuth();
   const userId = user?.sub || localStorage.getItem("userId");
+
+  const [state, dispatch] = useReducer(reducer, initCartState, (initial) => {
+    if (!userId) {
+      const savedCart = localStorage.getItem("cart");
+      return savedCart ? { cart: JSON.parse(savedCart) } : initial;
+    }
+    return initial;
+  });
 
   useEffect(() => {
     if (userId) {
       (async () => {
         const cartFromBackend = await fetchCartFromBackend(userId);
-        cartFromBackend.forEach((item: CartItemType) => {
-          dispatch({ type: REDUCER_ACTION_TYPE.ADD, payload: item });
-        });
+        dispatch({ type: REDUCER_ACTION_TYPE.SET, payload: cartFromBackend }); 
       })();
     }
   }, [userId]);
