@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+google-verification.html
 
 # Editor directories and files
 .vscode/*
