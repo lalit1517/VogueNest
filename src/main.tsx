@@ -13,7 +13,7 @@ const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={clientId}>
-      <AuthProvider>
+    <AuthProvider>
         <ProductsProvider>
           <CartProvider>
             <App />

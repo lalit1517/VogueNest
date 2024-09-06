@@ -23,7 +23,7 @@ const REDUCER_ACTION_TYPE = {
   ADD: "ADD",
   REMOVE: "REMOVE",
   QUANTITY: "QUANTITY",
-  SET: "SET",  // New action for setting cart
+  SET: "SET",
   SUBMIT: "SUBMIT",
 };
 
@@ -31,7 +31,7 @@ export type ReducerActionType = typeof REDUCER_ACTION_TYPE;
 
 export type ReducerAction = {
   type: string;
-  payload?: CartItemType | CartItemType[]; // Handle both single items and arrays for SET action
+  payload?: CartItemType | CartItemType[];
 };
 
 const reducer = (
@@ -143,20 +143,24 @@ const useCartContext = (initCartState: CartStateType) => {
   });
 
   useEffect(() => {
-    if (userId) {
-      (async () => {
-        const cartFromBackend = await fetchCartFromBackend(userId);
-        dispatch({ type: REDUCER_ACTION_TYPE.SET, payload: cartFromBackend }); 
-      })();
-    }
-  }, [userId]);
+  if (userId) {
+    (async () => {
+      const cartFromBackend = await fetchCartFromBackend(userId);
+      if (cartFromBackend.length > 0) { 
+        cartFromBackend.forEach(() => {
+          dispatch({ type: REDUCER_ACTION_TYPE.SET, payload: cartFromBackend })
+        });
+      }
+    })();
+  }
+}, [userId]);
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(state.cart));
-    if (userId) {
-      updateCartInBackend(userId, state.cart);
-    }
-  }, [state.cart, userId]);
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(state.cart));
+  if (userId) {
+    updateCartInBackend(userId, state.cart);
+  }
+}, [state.cart, userId]);
 
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
 
