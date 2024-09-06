@@ -46,19 +46,19 @@ const Home = () => {
 
     tl.fromTo(
       words3,
-      { y: 50, opacity: 0 },
+      { y: 100, opacity: 0 },
       { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }
     );
 
     tl.fromTo(
       ".content-2",
-      { y: 50, opacity: 0 },
+      { y: 100, opacity: 0 },
       { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }, 0.2
     ); 
 
     tl.fromTo(
       ".content-3",
-      { y: 50, opacity: 0 },
+      { y: 100, opacity: 0 },
       { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }, 0.4
     );
 
@@ -122,7 +122,7 @@ const Home = () => {
                 <img src="/home.png" alt="" />
               </div>
               <div className="w-full flex items-end justify-end heading-1">
-                <div className="flex flex-col w-full md:w-1/2 2xl:w-2/5 items-start gap-8 mb-10 justify-between text-[#E53935]">
+                <div className="flex flex-col overflow-hidden w-full md:w-1/2 2xl:w-2/5 items-start gap-8 mb-10 justify-between text-[#E53935]">
                   <div className="font-extrabold text-[2.3rem] md:text-[3rem] overflow-hidden">
                   {splitSentenceIntoWords3("OUR COLLECTION")}
                   </div>

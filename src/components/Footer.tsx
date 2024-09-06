@@ -42,13 +42,13 @@ const Footer = () => {
     tl.fromTo(
       ".newsletter-content1",
       { y: 200, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 3 }, 0.2
+      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }, 0.4
     ); 
 
     tl.fromTo(
       ".newsletter-content2",
       { y: 200, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 3 }, 0.4
+      { y: 0, opacity: 1, stagger: 0.1, ease: "power2.out", duration: 2 }, 0.6
     );
 
   }, [])

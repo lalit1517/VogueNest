@@ -214,6 +214,20 @@ const Header = () => {
     );
   }, [])
 
+  useEffect(() => {
+    gsap.fromTo(
+      ".nav-link",
+      { y: 100, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 3,
+        stagger: 0.5,
+        ease: "power2.out",
+      }
+    );
+  }, [])
+
   return (
     <>
       <header
@@ -222,7 +236,7 @@ const Header = () => {
         } ${menuOpen ? "fixed w-full" : "header"}`}
       >
         <div className="container overflow-hidden container-xl-custom h-[60px] flex items-center py-2 justify-between md:justify-center">
-          <div className="w-1/3 flex items-center justify-start">
+          <div className="w-1/3 flex items-center justify-start nav-link">
             <div>
               <WavyLink to="/" color="#E53935">
                 <img src="/logo.svg" alt="Logo" />
@@ -230,7 +244,7 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="md:hidden w-1/3 flex items-center justify-end">
+          <div className="md:hidden w-1/3 flex items-center justify-end nav-link">
             <button
               onClick={toggleMenu}
               className="text-white"

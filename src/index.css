@@ -453,6 +453,10 @@ header{
   }
 }
 
+.nav-link{
+  opacity: 0;
+}
+
 .header-link {
   transition: color 300ms ease;
   opacity: 0;
