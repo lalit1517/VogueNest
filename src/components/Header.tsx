@@ -214,20 +214,6 @@ const Header = () => {
     );
   }, [])
 
-  useEffect(() => {
-    gsap.fromTo(
-      ".nav-link",
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 3,
-        stagger: 0.5,
-        ease: "power2.out",
-      }
-    );
-  }, [])
-
   return (
     <>
       <header

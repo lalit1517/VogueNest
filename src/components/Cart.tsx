@@ -163,7 +163,7 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
               itemName: item.name,
               quantity: item.qty,
               price: item.price,
-              totalPrice, 
+              totalPrice,
               paymentId: response.razorpay_payment_id,
               paymentStatus: true,
               orderDate: formattedOrderDate,
@@ -256,6 +256,11 @@ const Cart = ({ isOpen, onClose }: ModalProps): ReactElement => {
                 />
               ))}
             </ul>
+            {totalItems == 0 && (
+              <div className="w-full h-full flex items-center justify-center container font-bold text-center text-[#E53935]">
+                <div>Add items to the Cart</div>
+              </div>
+            )}
           </div>
 
           <div

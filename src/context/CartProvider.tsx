@@ -40,7 +40,7 @@ const reducer = (
 ): CartStateType => {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.ADD: {
-      if (!action.payload || !('sku' in action.payload))
+      if (!action.payload || !("sku" in action.payload))
         throw new Error("action.payload missing in ADD action");
 
       const { sku, name, price } = action.payload;
@@ -56,7 +56,7 @@ const reducer = (
       return { ...state, cart: [...filteredCart, { sku, name, price, qty }] };
     }
     case REDUCER_ACTION_TYPE.REMOVE: {
-      if (!action.payload || !('sku' in action.payload))
+      if (!action.payload || !("sku" in action.payload))
         throw new Error("action.payload missing in REMOVE action");
 
       const { sku } = action.payload;
@@ -67,7 +67,7 @@ const reducer = (
       return { ...state, cart: filteredCart };
     }
     case REDUCER_ACTION_TYPE.QUANTITY: {
-      if (!action.payload || !('sku' in action.payload))
+      if (!action.payload || !("sku" in action.payload))
         throw new Error("action.payload missing in QUANTITY action");
 
       const { sku, qty } = action.payload;
@@ -102,7 +102,9 @@ const reducer = (
 
 const fetchCartFromBackend = async (userId: string) => {
   try {
-    const response = await fetch(`https://cart-services-jntk.onrender.com/api/cart/${userId}`);
+    const response = await fetch(
+      `https://cart-services-jntk.onrender.com/api/cart/${userId}`
+    );
     if (response.ok) {
       const data = await response.json();
       return data.cart;
@@ -117,13 +119,16 @@ const fetchCartFromBackend = async (userId: string) => {
 
 const updateCartInBackend = async (userId: string, cart: CartItemType[]) => {
   try {
-    const response = await fetch(`https://cart-services-jntk.onrender.com/api/cart/${userId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cart }),
-    });
+    const response = await fetch(
+      `https://cart-services-jntk.onrender.com/api/cart/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart }),
+      }
+    );
     if (!response.ok) throw new Error("Failed to update cart");
   } catch (error) {
     console.error("Error updating cart:", error);
@@ -143,24 +148,34 @@ const useCartContext = (initCartState: CartStateType) => {
   });
 
   useEffect(() => {
-  if (userId) {
-    (async () => {
-      const cartFromBackend = await fetchCartFromBackend(userId);
-      if (cartFromBackend.length > 0) { 
-        cartFromBackend.forEach(() => {
-          dispatch({ type: REDUCER_ACTION_TYPE.SET, payload: cartFromBackend })
-        });
-      }
-    })();
-  }
-}, [userId]);
+    if (userId) {
+      (async () => {
+        const cartFromBackend = await fetchCartFromBackend(userId);
+        const savedCart = localStorage.getItem("cart");
+        const cartFromLocalStorage = savedCart ? JSON.parse(savedCart) : [];
 
-useEffect(() => {
-  localStorage.setItem("cart", JSON.stringify(state.cart));
-  if (userId) {
-    updateCartInBackend(userId, state.cart);
-  }
-}, [state.cart, userId]);
+        if (cartFromBackend.length > 0) {
+          const filteredLocalCart = cartFromLocalStorage.filter(
+            (localItem: { sku: any }) =>
+              !cartFromBackend.some(
+                (backendItem: { sku: any }) => backendItem.sku === localItem.sku
+              )
+          );
+
+          const combinedCart = [...filteredLocalCart, ...cartFromBackend];
+
+          dispatch({ type: REDUCER_ACTION_TYPE.SET, payload: combinedCart });
+        }
+      })();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+    if (userId) {
+      updateCartInBackend(userId, state.cart);
+    }
+  }, [state.cart, userId]);
 
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
 
