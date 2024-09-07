@@ -19,6 +19,8 @@ interface DecodedJwtPayload extends JwtPayload {
 const Header = () => {
   const { user, setUser } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [isLoggedOut, setisLoggedOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profilePicRef = useRef<HTMLImageElement>(null);
@@ -83,6 +85,7 @@ const Header = () => {
     localStorage.removeItem("google_jwt");
     localStorage.removeItem("userId");
     setDropdownOpen(false);
+    setisLoggedOut(true);
   };
 
   const handleLoginSuccess = (credentialResponse: { credential?: string }) => {
@@ -99,6 +102,7 @@ const Header = () => {
           localStorage.setItem("userId", decoded.sub);
         }
         setDropdownOpen(false);
+        setisLoggedIn(true);
       } catch (error) {
         console.error("Failed to decode credential:", error);
       }
@@ -212,7 +216,7 @@ const Header = () => {
         ease: "power2.out",
       }
     );
-  }, [])
+  }, []);
 
   return (
     <>
@@ -472,6 +476,43 @@ const Header = () => {
             )}
           </div>
         </div>
+      )}
+
+      {isLoggedIn && (
+        <>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
+              <button
+                onClick={() => setisLoggedIn(false)}
+                className="absolute  top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-[#E53935] transition-colors duration-300"
+              >
+                &times;
+              </button>
+              <h3 className="text-xl font-extrabold my-6">
+                You're logged in !
+              </h3>
+              <p className="mb-4">Have fun shopping.</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {isLoggedOut && (
+        <>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-5/6 md:w-full relative">
+              <button
+                onClick={() => setisLoggedOut(false)}
+                className="absolute  top-2 right-4 font-bold text-[2rem] hover:text-gray-800 text-[#E53935] transition-colors duration-300"
+              >
+                &times;
+              </button>
+              <h3 className="text-xl font-extrabold my-6">
+                You're logged out !
+              </h3>
+            </div>
+          </div>
+        </>
       )}
 
       <Cart isOpen={isModalOpen} onClose={closeModal} />
